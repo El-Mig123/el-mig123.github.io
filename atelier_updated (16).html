@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Michael Schuessler — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cormorant+SC:wght@300;400;500&family=Jost:wght@200;300;400&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --cream: #C8B89A;
+      --cream-dark: #BCA98A;
+      --navy: #1E2D4E;
+      --navy-light: #2E4070;
+      --gold: #ffdd03;
+      --text-muted: #2c3d58;
+    }
+
+    ::selection {
+      background: #ffdd03;
+      color: #1E2D4E;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--cream);
+      color: var(--navy);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ─── PAPYRUS EDGE STIPPLING ─── */
+    .papyrus-edges {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 60% 40% at 0% 0%, rgba(101,78,50,0.28) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 100% 0%, rgba(101,78,50,0.22) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 0% 100%, rgba(101,78,50,0.26) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 100% 100%, rgba(101,78,50,0.24) 0%, transparent 70%),
+        radial-gradient(ellipse 100% 12% at 50% 0%, rgba(90,68,40,0.18) 0%, transparent 100%),
+        radial-gradient(ellipse 100% 12% at 50% 100%, rgba(90,68,40,0.18) 0%, transparent 100%),
+        radial-gradient(ellipse 12% 100% at 0% 50%, rgba(90,68,40,0.14) 0%, transparent 100%),
+        radial-gradient(ellipse 12% 100% at 100% 50%, rgba(90,68,40,0.14) 0%, transparent 100%);
+    }
+
+    /* ─── GRAIN OVERLAY ─── */
+    .grain {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.09;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 200px;
+    }
+
+    /* ─── LAYOUT ─── */
+    .content {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2.2rem 5vw;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      mix-blend-mode: multiply;
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant SC', serif;
+      font-weight: 400;
+      font-size: 1.29rem;
+      letter-spacing: 0.36em;
+      color: var(--navy);
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0;
+      justify-content: space-evenly;
+      width: 700px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Jost', sans-serif;
+      font-weight: 400;
+      font-size: 0.82rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--navy);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 28vh;
+      display: flex;
+      align-items: center;
+      padding: 0 5vw;
+      position: relative;
+    }
+
+    .hero-inner {
+      max-width: 900px;
+      padding-top: 80px;
+      animation: heroReveal 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    @keyframes heroReveal {
+      from { opacity: 0; transform: translateY(32px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-eyebrow {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: clamp(1rem, 2.2vw, 1.6rem);
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--navy);
+      margin-bottom: 0;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(5rem, 12vw, 10rem);
+      line-height: 0.9;
+      letter-spacing: -0.01em;
+      color: var(--navy);
+      margin-bottom: 2rem;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--navy-light);
+    }
+
+    .hero-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: 1.35rem;
+      color: var(--text-muted);
+      max-width: 480px;
+      line-height: 1.7;
+      margin-bottom: 3.5rem;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.7rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--navy);
+      text-decoration: none;
+      border-bottom: 1px solid var(--gold);
+      padding-bottom: 4px;
+      transition: color 0.3s, border-color 0.3s;
+    }
+
+    .hero-cta:hover { color: var(--gold); }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 3rem;
+      right: 5vw;
+      writing-mode: vertical-rl;
+      font-family: 'Jost', sans-serif;
+      font-weight: 200;
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .hero-scroll::before {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, transparent, var(--gold));
+    }
+
+    /* ─── DIVIDER ─── */
+    .section-divider {
+      width: 60px;
+      height: 1px;
+      background: var(--gold);
+      margin: 0 auto 1.2rem;
+    }
+
+    /* ─── ABOUT ─── */
+    .about {
+      padding: 12rem 5vw 8rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8rem;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .about-label {
+      font-family: 'Jost', sans-serif;
+      font-weight: 200;
+      font-size: 0.65rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 2rem;
+    }
+
+    .about-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(2.4rem, 4vw, 3.6rem);
+      line-height: 1.1;
+      color: var(--navy);
+      margin-bottom: 2rem;
+    }
+
+    .about-heading em {
+      font-style: italic;
+    }
+
+    .about-body {
+      font-size: 0.88rem;
+      line-height: 1.95;
+      color: var(--text-muted);
+      margin-bottom: 1.4rem;
+    }
+
+    .about-portrait {
+      aspect-ratio: 3/4;
+      background: var(--cream-dark);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-portrait::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #d4c4a0 0%, #b8a880 50%, #8e7d62 100%);
+      opacity: 0.4;
+    }
+
+    .about-portrait-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant SC', serif;
+      font-weight: 300;
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .about-portrait::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; right: -1px;
+      width: 40%; height: 40%;
+      border-bottom: 1px solid var(--gold);
+      border-right: 1px solid var(--gold);
+    }
+
+    /* ─── LOOKBOOK ─── */
+    .lookbook {
+      padding: 8rem 5vw 12rem;
+      position: relative;
+    }
+
+    .lookbook-header {
+      text-align: center;
+      margin-bottom: 5rem;
+    }
+
+    .section-label {
+      font-family: 'Jost', sans-serif;
+      font-weight: 200;
+      font-size: 0.65rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      line-height: 1;
+      color: var(--navy);
+    }
+
+    .section-title em { font-style: italic; }
+
+    /* Lookbook grid */
+    .lookbook-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: auto;
+      gap: 1.4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .lb-item {
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      background: var(--cream-dark);
+    }
+
+    .lb-item:nth-child(1) { grid-column: 1 / 6; grid-row: 1 / 3; aspect-ratio: 4/5; }
+    .lb-item:nth-child(2) { grid-column: 6 / 9; grid-row: 1; aspect-ratio: 3/4; }
+    .lb-item:nth-child(3) { grid-column: 9 / 13; grid-row: 1 / 3; aspect-ratio: 4/5; }
+    .lb-item:nth-child(4) { grid-column: 6 / 9; grid-row: 2; aspect-ratio: 3/4; }
+    .lb-item:nth-child(5) { grid-column: 1 / 5; grid-row: 3; aspect-ratio: 5/4; }
+    .lb-item:nth-child(6) { grid-column: 5 / 9; grid-row: 3; aspect-ratio: 5/4; }
+    .lb-item:nth-child(7) { grid-column: 9 / 13; grid-row: 3; aspect-ratio: 5/4; }
+
+    /* Gradient fills as placeholder "images" */
+    .lb-fill {
+      position: absolute;
+      inset: 0;
+      transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .lb-item:hover .lb-fill { transform: scale(1.04); }
+
+    .lb-item:nth-child(1) .lb-fill { background: linear-gradient(160deg, #d4c0a4 0%, #9e8a72 60%, #6e5e4e 100%); }
+    .lb-item:nth-child(2) .lb-fill { background: linear-gradient(200deg, #bfc8d8 0%, #8898ae 100%); }
+    .lb-item:nth-child(3) .lb-fill { background: linear-gradient(140deg, #c8b090 0%, #9a7a5e 50%, #4a3c30 100%); }
+    .lb-item:nth-child(4) .lb-fill { background: linear-gradient(180deg, #d8cec0 0%, #a89880 100%); }
+    .lb-item:nth-child(5) .lb-fill { background: linear-gradient(110deg, #e0d4bc 0%, #b89e80 100%); }
+    .lb-item:nth-child(6) .lb-fill { background: linear-gradient(170deg, #c4ccd8 0%, #7a8ea8 100%); }
+    .lb-item:nth-child(7) .lb-fill { background: linear-gradient(130deg, #d8c8a8 0%, #a88c68 100%); }
+
+    .lb-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(14, 22, 40, 0.55) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .lb-item:hover .lb-overlay { opacity: 1; }
+
+    .lb-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 1.6rem 1.4rem;
+      transform: translateY(8px);
+      opacity: 0;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .lb-item:hover .lb-info {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .lb-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: 1.3rem;
+      color: var(--cream);
+      line-height: 1.2;
+      margin-bottom: 0.3rem;
+    }
+
+    .lb-cat {
+      font-family: 'Jost', sans-serif;
+      font-weight: 200;
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(245, 239, 227, 0.7);
+    }
+
+    .lb-num {
+      position: absolute;
+      top: 1rem;
+      right: 1.1rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      color: rgba(245, 239, 227, 0.5);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .lb-item:hover .lb-num { opacity: 1; }
+
+    /* ─── DISCIPLINES ─── */
+    .disciplines {
+      padding: 6rem 5vw 10rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      border-top: 1px solid rgba(30, 45, 78, 0.1);
+    }
+
+    .disciplines-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 4rem;
+    }
+
+    .aesthetic-photos {
+      display: flex;
+      justify-content: center;
+      gap: 0.6rem;
+      margin: 4rem auto 0;
+      max-width: 1200px;
+      padding: 0 5vw;
+    }
+    .aesthetic-photos + .aesthetic-photos {
+      margin-top: 0.6rem;
+    }
+    .aesthetic-photo-wrap {
+      flex: 1;
+      position: relative;
+    }
+    .aesthetic-photo-wrap img,
+    .aesthetic-photo-wrap video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .disciplines-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+    }
+
+    .discipline-item {
+      padding-top: 2rem;
+      border-top: 1px solid rgba(30, 45, 78, 0.15);
+    }
+
+    .discipline-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 0.85rem;
+      color: var(--gold);
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+    }
+
+    .discipline-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 1.9rem;
+      line-height: 1.1;
+      color: var(--navy);
+      margin-bottom: 1rem;
+    }
+
+    .discipline-name em { font-style: italic; }
+
+    .discipline-desc {
+      font-size: 0.82rem;
+      line-height: 1.85;
+      color: var(--text-muted);
+    }
+
+    /* ─── CONTACT ─── */
+    .contact {
+      padding: 8rem 5vw;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact::before {
+      content: '';
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(calc(-50% + 24px), -50%);
+      font-family: 'Cormorant SC', serif;
+      font-weight: 300;
+      font-size: 18vw;
+      letter-spacing: 0.3em;
+      color: rgba(30, 45, 78, 0.18);
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .contact-content { position: relative; }
+
+    .contact-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      line-height: 1;
+      color: var(--navy);
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-title em { font-style: italic; }
+
+    .contact-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      margin-bottom: 3.5rem;
+    }
+
+    .contact-email {
+      display: inline-block;
+      font-family: 'Cormorant SC', serif;
+      font-weight: 300;
+      font-size: 1.05rem;
+      letter-spacing: 0.22em;
+      color: var(--navy);
+      text-decoration: none;
+      border-bottom: 1px solid var(--gold);
+      padding-bottom: 5px;
+      transition: color 0.3s;
+    }
+
+    .contact-email:hover { color: var(--gold); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      padding: 2rem 5vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(30, 45, 78, 0.1);
+    }
+
+    footer span {
+      font-family: 'Jost', sans-serif;
+      font-weight: 200;
+      font-size: 0.62rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* ─── FADE IN ─── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    /* ─── BRASS FRAME ─── */
+    .brass-frame {
+      position: relative;
+      overflow: hidden;
+      box-shadow:
+        0 0 0 2px #b8913a,
+        0 0 0 4px #7a5c1e,
+        0 0 0 6px #d4a84b,
+        0 0 0 8px #6b4f18,
+        inset 0 0 0 1px rgba(212,168,75,0.3),
+        5px 8px 22px rgba(0,0,0,0.65);
+      background: #7a5c1e;
+    }
+    .brass-frame::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          45deg,
+          transparent, transparent 3px,
+          rgba(212,168,75,0.06) 3px, rgba(212,168,75,0.06) 4px
+        );
+      z-index: 3;
+      pointer-events: none;
+    }
+    .brass-frame::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      box-shadow:
+        inset 2px 2px 4px rgba(212,168,75,0.5),
+        inset -2px -2px 4px rgba(60,35,5,0.6);
+      z-index: 3;
+      pointer-events: none;
+    }
+    .brass-frame img,
+    .brass-frame video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: relative;
+      z-index: 1;
+    }
+
+        /* ─── CASE STUDY CARD HOVER ─── */
+    .brass-frame .cs-cta { transition: color 0.25s ease, opacity 0.25s ease; }
+    .brass-frame:hover .cs-cta-gold { color: #e8d9b8 !important; opacity: 1 !important; }
+    .brass-frame:hover .cs-cta-teal { color: #a8e8d8 !important; opacity: 1 !important; }
+
+    /* ─── SECTION SEPARATORS ─── */
+    .sep {
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding: 0 5vw;
+      height: 1px;
+      overflow: visible;
+    }
+
+    .sep::before {
+      content: '';
+      display: block;
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(30,45,78,0.85) 15%, rgba(30,45,78,0.85) 85%, transparent);
+    }
+
+    .sep-label {
+      font-family: 'Cormorant SC', serif;
+      font-weight: 400;
+      font-size: 0.86rem;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: rgba(30,45,78,1);
+      padding: 0 1.6rem;
+      white-space: nowrap;
+    }
+
+    .sep::after {
+      content: '';
+      display: block;
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, rgba(30,45,78,0.85) 15%, transparent);
+    }
+
+
+    /* ─── GARMENT SHOWCASE ─── */
+    .garment-stage {
+      position: relative;
+      max-width: 1100px;
+      margin: 0 auto;
+      height: 720px;
+    }
+
+    .garment-card {
+      position: absolute;
+      width: 320px;
+      background: transparent;
+      cursor: pointer;
+      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+      filter: drop-shadow(0 8px 28px rgba(30,20,10,0.25));
+    }
+
+    .garment-card:hover {
+      z-index: 10 !important;
+      filter: drop-shadow(0 16px 44px rgba(30,20,10,0.40));
+    }
+
+    .garment-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Stagger: left=topmost, descending right, overlapping */
+    /* Card 1: 320px wide, left edge at 40px                         */
+    /* Card 2: 340px wide, 40% overlap = 128px → left at 232px       */
+    /* Card 3: 320px wide, 60% overlap = 204px → left at 368px       */
+    .garment-card:nth-child(1) {
+      left: 236px;
+      top: 0px;
+      transform: rotate(-3deg);
+      z-index: 3;
+    }
+    .garment-card:nth-child(2) {
+      left: 380px;
+      top: 32px;
+      transform: rotate(2deg);
+      z-index: 2;
+      width: 340px;
+    }
+    .garment-card:nth-child(3) {
+      left: 516px;
+      top: 112px;
+      transform: rotate(5deg);
+      z-index: 1;
+    }
+
+    .garment-card:nth-child(1):hover { transform: rotate(-1deg) scale(1.04); z-index: 10 !important; }
+    .garment-card:nth-child(2):hover { transform: rotate(0deg) scale(1.04); z-index: 10 !important; }
+    .garment-card:nth-child(3):hover { transform: rotate(2deg) scale(1.04); z-index: 10 !important; }
+
+    .garment-caption {
+      text-align: center;
+      margin-top: calc(-1rem - 144px);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+    }
+
+    /* ─── LIGHTBOX ─── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(14, 18, 30, 0.92);
+      align-items: center;
+      justify-content: center;
+      padding: 3rem;
+      cursor: zoom-out;
+    }
+
+    .lightbox.open { display: flex; }
+
+    .lightbox-inner {
+      position: relative;
+      max-width: 880px;
+      max-height: 90vh;
+      animation: lbIn 0.35s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    @keyframes lbIn {
+      from { opacity:0; transform: scale(0.88); }
+      to   { opacity:1; transform: scale(1); }
+    }
+
+    .lightbox-inner img {
+      max-width: 100%;
+      max-height: 86vh;
+      object-fit: contain;
+      mix-blend-mode: multiply;
+      border-radius: 3px;
+      display: block;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: -2.4rem;
+      right: 0;
+      font-family: 'Jost', sans-serif;
+      font-weight: 200;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(245,239,227,0.7);
+      cursor: pointer;
+      border: none;
+      background: none;
+      padding: 0;
+      transition: color 0.2s;
+    }
+
+    .lightbox-close:hover { color: var(--gold); }
+
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      color: rgba(245,239,227,0.55);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      transition: color 0.2s;
+      line-height: 1;
+    }
+
+    .lightbox-nav:hover { color: var(--gold); }
+    .lightbox-nav.prev { left: -3.5rem; }
+    .lightbox-nav.next { right: -3.5rem; }
+
+    .lightbox-counter {
+      position: absolute;
+      bottom: -2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Jost', sans-serif;
+      font-weight: 200;
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      color: rgba(245,239,227,0.45);
+    }
+  </style>
+</head>
+<body>
+    <svg width="0" height="0" style="position:absolute;overflow:hidden;">
+      <defs>
+        <!-- Stroke texture: fine bristle turbulence for surface detail -->
+        <filter id="bristle" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB">
+          <feTurbulence type="turbulence" baseFrequency="0.008 0.18" numOctaves="4" seed="5" result="bristleNoise"/>
+          <feDisplacementMap in="SourceGraphic" in2="bristleNoise" scale="22" xChannelSelector="R" yChannelSelector="G" result="bristled"/>
+          <feTurbulence type="fractalNoise" baseFrequency="0.06 0.004" numOctaves="6" seed="12" result="strokeNoise"/>
+          <feDisplacementMap in="bristled" in2="strokeNoise" scale="45" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <!-- Edge jagging: heavy displacement for outer blob edges -->
+        <filter id="bs2" x="-40%" y="-40%" width="180%" height="180%" color-interpolation-filters="sRGB">
+          <feTurbulence type="turbulence" baseFrequency="0.012 0.22" numOctaves="5" seed="3" result="n1"/>
+          <feDisplacementMap in="SourceGraphic" in2="n1" scale="55" xChannelSelector="R" yChannelSelector="G" result="d1"/>
+          <feTurbulence type="fractalNoise" baseFrequency="0.07 0.005" numOctaves="4" seed="9" result="n2"/>
+          <feDisplacementMap in="d1" in2="n2" scale="90" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <!-- Outer wash: very loose bristle strokes -->
+        <filter id="bs3" x="-60%" y="-60%" width="220%" height="220%" color-interpolation-filters="sRGB">
+          <feTurbulence type="turbulence" baseFrequency="0.006 0.28" numOctaves="5" seed="17" result="n1"/>
+          <feDisplacementMap in="SourceGraphic" in2="n1" scale="80" xChannelSelector="R" yChannelSelector="G" result="d1"/>
+          <feTurbulence type="fractalNoise" baseFrequency="0.045 0.003" numOctaves="7" seed="22" result="n2"/>
+          <feDisplacementMap in="d1" in2="n2" scale="160" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+      </defs>
+    </svg>
+
+
+  <!-- RAYS BACKGROUND -->
+  <!--
+    ═══════════════════════════════════════════════════════════
+    GEOMETRY NOTES
+    ───────────────────────────────────────────────────────────
+    Origin O = (-60, 720)  →  just off left edge, 20% up from
+    bottom  (900 − 180 = 720).
+
+    Fan spans θ = −20° → +84° from the positive-x axis
+    (standard math, CCW positive; SVG y is flipped).
+    This is the previous layout rotated +55° counter-clockwise,
+    shifting the whole burst strongly upward.
+
+    Ray boundary angles and widths (varied ±10–20%):
+      b0=−20°  R1 width 22°  →  b1=  2°   deep navy
+      b1=  2°  R2 width 14°  →  b2= 16°   golden yellow
+      b2= 16°  R3 width 20°  →  b3= 36°   near-black charcoal
+      b3= 36°  R4 width 16°  →  b4= 52°   amber orange
+      b4= 52°  R5 width 18°  →  b5= 70°   cobalt blue
+      b5= 70°  R6 width  8°  →  b6= 78°   crimson red
+      b6= 78°  R7 width  6°  →  b7= 84°   vermillion
+
+    All rays are contiguous — no angular gaps.
+    Colors are non-spectral / shuffled for artistic variety.
+
+    Edge intersections (bleed: x ∈ [−100,1500], y ∈ [−50,950]):
+      b0 −20° → bottom  (573, 950)
+      b1   2° → right   (1500, 666)
+      b2  16° → right   (1500, 318)
+      b3  36° → top     (1000, −50)  corner (1500,−50) needed
+      b4  52° → top     (586,  −50)
+      b5  70° → top     (252,  −50)
+      b6  78° → top     (105,  −50)
+      b7  84° → top     (21,   −50)
+
+    For the b1→b2 boundary, both b2 and b3 hit different edges so
+    the right-top corner (1500,−50) is inserted in R3's polygon.
+    For the b0 bottom-edge and b1 right-edge, the bottom-right
+    corner (1500, 950) is inserted in R1's polygon.
+    ═══════════════════════════════════════════════════════════
+  -->
+  <div class="papyrus-edges" aria-hidden="true"></div>
+
+  <!-- GRAIN -->
+  <div class="grain"></div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- NAV -->
+    <nav>
+      <a href="#" class="nav-logo">Michael Schuessler</a>
+      <ul class="nav-links">
+        <li><a href="#productwork">Product Management</a></li>
+        <li><a href="#lookbook">Fashion Design</a></li>
+        <li><a href="#aesthetics">Aesthetics</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-inner">
+        <p class="hero-eyebrow"></p>
+      </div>
+      <div class="hero-scroll">Scroll</div>
+    </section>
+
+    <!-- SEPARATOR -->
+    <div class="sep"><span class="sep-label">Product Development Works</span></div>
+
+    <!-- PRODUCT WORK SECTION -->
+    <section class="lookbook" id="productwork" style="padding-top:1.5in; padding-bottom:4rem;">
+      <div style="
+        display: flex;
+        gap: 2.5rem;
+        justify-content: center;
+        padding: 0.5rem 5vw 2rem;
+        flex-wrap: wrap;
+      ">
+
+        <!-- Card 1 — U.S. Licensing Case Study -->
+        <div class="brass-frame" style="flex:0 0 360px; transition:transform 0.25s ease, box-shadow 0.25s ease;" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 0 0 2px #b8913a,0 0 0 4px #7a5c1e,0 0 0 6px #d4a84b,0 0 0 8px #6b4f18,inset 0 0 0 1px rgba(212,168,75,0.3),8px 20px 36px rgba(0,0,0,0.8)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+        <a href="#" onclick="openCaseStudy('licensing'); return false;" style="text-decoration:none; color:inherit; display:block; height:100%;">
+        <div style="flex:0 0 360px; height:100%; background:#0e0e0e; border-top:2px solid #c8a96e; display:flex; flex-direction:column; cursor:pointer; position:relative; z-index:1;">
+          <div style="width:100%; padding:1.8rem 1.6rem 1.4rem; background:rgba(200,169,110,0.05); border-bottom:1px solid rgba(200,169,110,0.15);">
+            <p style="font-family:'DM Sans',sans-serif; font-size:0.58rem; letter-spacing:0.18em; text-transform:uppercase; color:#c8a96e; margin-bottom:0.9rem;">Shift Markets &nbsp;·&nbsp; 2019–2022 &nbsp;·&nbsp; Product Management</p>
+            <p style="font-family:'DM Serif Display',serif; font-size:1.85rem; font-weight:400; line-height:1.15; color:#f5f2ec; margin-bottom:0;">U.S. Market <em style="font-style:italic; color:#c8a96e;">Licensing</em> Expansion</p>
+          </div>
+          <div style="padding:1.4rem 1.6rem; flex:1; display:flex; flex-direction:column; gap:1rem;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8rem;">
+              <div><p style="font-family:'DM Sans',sans-serif; font-size:0.58rem; letter-spacing:0.14em; text-transform:uppercase; color:#6b6b6b; margin-bottom:0.3rem;">Role</p><p style="font-family:'DM Sans',sans-serif; font-size:0.78rem; font-weight:400; color:#f5f2ec; line-height:1.4;">Project Manager (Product Lead)</p></div>
+              <div><p style="font-family:'DM Sans',sans-serif; font-size:0.58rem; letter-spacing:0.14em; text-transform:uppercase; color:#6b6b6b; margin-bottom:0.3rem;">Duration</p><p style="font-family:'DM Sans',sans-serif; font-size:0.78rem; font-weight:400; color:#f5f2ec;">9 months</p></div>
+              <div><p style="font-family:'DM Sans',sans-serif; font-size:0.58rem; letter-spacing:0.14em; text-transform:uppercase; color:#6b6b6b; margin-bottom:0.3rem;">Team</p><p style="font-family:'DM Sans',sans-serif; font-size:0.78rem; font-weight:400; color:#f5f2ec; line-height:1.4;">Compliance, Legal, Engineering, Design</p></div>
+              <div><p style="font-family:'DM Sans',sans-serif; font-size:0.58rem; letter-spacing:0.14em; text-transform:uppercase; color:#6b6b6b; margin-bottom:0.3rem;">Outcome</p><p style="font-family:'DM Sans',sans-serif; font-size:0.78rem; font-weight:400; color:#f5f2ec; line-height:1.4;">36-state operational readiness</p></div>
+            </div>
+            <p class="cs-cta cs-cta-gold" style="font-family:'DM Sans',sans-serif; font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(200,169,110,0.5); margin-top:auto;">View case study →</p>
+          </div>
+        </div>
+        </a>
+        </div>
+
+        <!-- Card 2 — Mobile App Redesign Case Study -->
+        <div class="brass-frame" style="flex:0 0 360px; transition:transform 0.25s ease, box-shadow 0.25s ease;" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 0 0 2px #b8913a,0 0 0 4px #7a5c1e,0 0 0 6px #d4a84b,0 0 0 8px #6b4f18,inset 0 0 0 1px rgba(212,168,75,0.3),8px 20px 36px rgba(0,0,0,0.8)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+        <a href="#" onclick="openCaseStudy('mobile'); return false;" style="text-decoration:none; color:inherit; display:block; height:100%;">
+        <div style="flex:0 0 360px; height:100%; background:#0e0e0e; border-top:2px solid #4fc4a0; display:flex; flex-direction:column; cursor:pointer; position:relative; z-index:1;">
+          <div style="width:100%; padding:1.8rem 1.6rem 1.4rem; background:rgba(79,196,160,0.05); border-bottom:1px solid rgba(79,196,160,0.15);">
+            <p style="font-family:'DM Sans',sans-serif; font-size:0.58rem; letter-spacing:0.18em; text-transform:uppercase; color:#4fc4a0; margin-bottom:0.9rem;">Shift Markets &nbsp;·&nbsp; 2019–2022 &nbsp;·&nbsp; Product Management</p>
+            <p style="font-family:'DM Serif Display',serif; font-size:1.85rem; font-weight:400; line-height:1.15; color:#f5f2ec; margin-bottom:0;">Mobile Trading App <em style="font-style:italic; color:#4fc4a0;">Redesign</em></p>
+          </div>
+          <div style="padding:1.4rem 1.6rem; flex:1; display:flex; flex-direction:column; gap:1rem;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8rem;">
+              <div><p style="font-family:'DM Sans',sans-serif; font-size:0.58rem; letter-spacing:0.14em; text-transform:uppercase; color:#6b6b6b; margin-bottom:0.3rem;">Role</p><p style="font-family:'DM Sans',sans-serif; font-size:0.78rem; font-weight:400; color:#f5f2ec; line-height:1.4;">Project Manager (Product Lead)</p></div>
+              <div><p style="font-family:'DM Sans',sans-serif; font-size:0.58rem; letter-spacing:0.14em; text-transform:uppercase; color:#6b6b6b; margin-bottom:0.3rem;">Duration</p><p style="font-family:'DM Sans',sans-serif; font-size:0.78rem; font-weight:400; color:#f5f2ec;">5 months (6-month budget)</p></div>
+              <div><p style="font-family:'DM Sans',sans-serif; font-size:0.58rem; letter-spacing:0.14em; text-transform:uppercase; color:#6b6b6b; margin-bottom:0.3rem;">Team</p><p style="font-family:'DM Sans',sans-serif; font-size:0.78rem; font-weight:400; color:#f5f2ec; line-height:1.4;">8–10 Engineers, Design, 3 Partners</p></div>
+              <div><p style="font-family:'DM Sans',sans-serif; font-size:0.58rem; letter-spacing:0.14em; text-transform:uppercase; color:#6b6b6b; margin-bottom:0.3rem;">Outcome</p><p style="font-family:'DM Sans',sans-serif; font-size:0.78rem; font-weight:400; color:#f5f2ec; line-height:1.4;">+37% downloads, +48% MAU</p></div>
+            </div>
+            <p class="cs-cta cs-cta-teal" style="font-family:'DM Sans',sans-serif; font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(79,196,160,0.5); margin-top:auto;">View case study →</p>
+          </div>
+        </div>
+        </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SEPARATOR -->
+    <div class="sep"><span class="sep-label">Atelier Fashion Design Portfolio</span></div>
+
+    <!-- LOOKBOOK -->
+    <section class="lookbook" id="lookbook" style="padding-top:0.5in;">
+      <div style="padding-bottom:4rem;">
+        <div class="garment-stage">
+
+          <div class="garment-card" data-index="0">
+            <img src="https://res.cloudinary.com/dp6ugvdvb/image/upload/v1772842429/garment-1_y7e2na.png" alt="Garment Study — Detail View" />
+          </div>
+
+          <div class="garment-card" data-index="1">
+            <img src="https://res.cloudinary.com/dp6ugvdvb/image/upload/v1772842424/garment-2_e5mm9a.png" alt="Garment Study — Front, 1/1" />
+          </div>
+
+          <div class="garment-card" data-index="2">
+            <img src="https://res.cloudinary.com/dp6ugvdvb/image/upload/v1772842427/garment-3_ywpdqa.png" alt="Garment Study — Front, Wider" />
+          </div>
+
+        </div>
+        <p class="garment-caption">Crimson & Gold Brocade Jacket — colored pencil and pencil on paper, 1/1</p>
+      </div>
+    </section>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox">
+      <div class="lightbox-inner" id="lightbox-inner">
+        <button class="lightbox-close" id="lightbox-close">Close ✕</button>
+        <button class="lightbox-nav prev" id="lb-prev">&#8592;</button>
+        <img src="" id="lightbox-img" alt="" />
+        <button class="lightbox-nav next" id="lb-next">&#8594;</button>
+        <div class="lightbox-counter" id="lb-counter"></div>
+      </div>
+    </div>
+
+    <!-- SEPARATOR -->
+    <div class="sep"><span class="sep-label">Design Inspiration Themes/Aesthetics</span></div>
+
+    <!-- AESTHETICS -->
+    <section class="lookbook" id="aesthetics" style="padding-top:1.5in; padding-bottom:4rem;">
+
+      <div class="aesthetic-photo-bg">
+      <div class="aphb-l5"></div>
+      <div class="aphb-l4"></div>
+      <div class="aphb-l3"></div>
+      <div class="aphb-l2"></div>
+      <div class="aphb-l1"></div>
+      <div style="position:relative; z-index:2; width:100%; max-width:1200px; margin:0 auto;
+        display:grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 80px 60px;
+        overflow: visible;
+        padding: 40px 20px 60px;
+        box-sizing: border-box;">
+
+        <div class="brass-frame" style="position:relative; height:210px;">
+          <img src="https://res.cloudinary.com/dp6ugvdvb/image/upload/v1773115804/052711fc-73e4-4e42-8084-779bac1158c2_uectbm.jpg" />
+        </div>
+        <div class="brass-frame" style="position:relative; height:210px;">
+          <video src="https://res.cloudinary.com/dp6ugvdvb/video/upload/v1773334516/4d319b85-deb2-4ead-b730-590e3c454552_gzytfb.mp4" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+        </div>
+        <div class="brass-frame" style="position:relative; height:210px;">
+          <img src="https://res.cloudinary.com/dp6ugvdvb/image/upload/v1773200330/d6317708-a164-4568-95a6-28cc9883d2a1_h2q6op.jpg" />
+        </div>
+
+        <div class="brass-frame" style="position:relative; height:210px;">
+          <img src="https://res.cloudinary.com/dp6ugvdvb/image/upload/v1773115067/6732349437_ec444c1c5f_b-740747033_n0pjyj.jpg" />
+        </div>
+        <div class="brass-frame" style="position:relative; height:210px;">
+          <img src="https://res.cloudinary.com/dp6ugvdvb/image/upload/v1773201607/1c6c44ac-1109-47b7-861a-05deacda26fa_ettpiu.jpg" />
+        </div>
+        <div class="brass-frame" style="position:relative; height:210px;">
+          <img src="https://res.cloudinary.com/dp6ugvdvb/image/upload/v1773334906/d2a6b1a4-799c-4a7d-91e8-f5c6c597f21a_clmgmg.jpg" />
+        </div>
+
+        <div class="brass-frame" style="position:relative; height:210px; grid-column:1/3;">
+          <video autoplay muted loop playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;display:block;">
+            <source src="https://res.cloudinary.com/dp6ugvdvb/video/upload/v1773338036/screencast_2026-03-12_13-51-51_zbtsx3.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="brass-frame" style="position:relative; height:210px;">
+          <img src="https://res.cloudinary.com/dp6ugvdvb/image/upload/v1773200275/61cd3622-cc34-4fb1-8df9-8654095eb643_ctxaep.jpg" />
+        </div>
+
+        <div class="brass-frame" style="position:relative; height:210px;">
+          <img src="https://res.cloudinary.com/dp6ugvdvb/image/upload/v1773336677/f78e5f18-e502-4394-9b85-9ceb7d9208ab_yyjkjc.jpg" />
+        </div>
+        <div class="brass-frame" style="position:relative; height:210px;">
+          <img src="https://res.cloudinary.com/dp6ugvdvb/image/upload/v1773334517/3c8c3015-5c9e-4ea0-b25a-4f1da4275be4_k3juja.jpg" />
+        </div>
+        <div class="brass-frame" style="position:relative; height:210px;">
+          <img src="https://res.cloudinary.com/dp6ugvdvb/image/upload/v1773346393/6c3bcac9-1668-42f8-a936-51a230821a00_ekqldb.jpg" />
+        </div>
+
+        <div class="brass-frame" style="position:relative; height:210px;">
+          <img src="https://res.cloudinary.com/dp6ugvdvb/image/upload/v1773346335/df4d2ef8-2bc3-4468-a627-cf3f0b5d2e8e_i9kzbd.jpg" />
+        </div>
+        <div class="brass-frame" style="position:relative; height:210px;">
+          <img src="https://res.cloudinary.com/dp6ugvdvb/image/upload/v1773346334/d3f35d83-0704-421a-9184-6e5b3515b364_fu9h7u.jpg" />
+        </div>
+        <div class="brass-frame" style="position:relative; height:210px;">
+          <img src="https://res.cloudinary.com/dp6ugvdvb/image/upload/v1773343674/cdb43085-d921-42fb-b5fa-0d30a8cd4d3d_fmb8os.jpg" />
+        </div>
+
+        <div class="brass-frame" style="position:relative; height:210px; width:360px; margin-left:auto; margin-right:auto; grid-column:2/3;">
+          <img src="https://res.cloudinary.com/dp6ugvdvb/image/upload/v1773342753/d1d0d2c0-bef8-4ee8-b312-eeffcd79034f_skdt1x.jpg" />
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- SEPARATOR -->
+    <div class="sep"><span class="sep-label">About</span></div>
+
+    <!-- ABOUT -->
+    <section id="about" >
+      <div class="about">
+        <div>
+          <p class="about-label">About the practice</p>
+          <h2 class="about-heading">Rooted in<br><em>details.</em><br>Driven by<br><em>curiosity.</em></h2>
+          <p class="about-body">
+            Michael Schuessler is building a design practice built on the belief that creative work should be compelling, elegant, and inspirational. Every project is intended to elevate the mundane to the ethereal by way of beautifully crafted creative work that challenges the status quo.
+          </p>
+          <a href="#contact" class="hero-cta" style="margin-top:1rem; display:inline-block;">Get in touch</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEPARATOR -->
+    <div class="sep"><span class="sep-label">Contact</span></div>
+
+    <!-- CONTACT -->
+    <section class="contact" id="contact">
+      <div class="contact-content">
+        <h2 class="contact-title"><em>Let's<br>work together</em></h2>
+
+        <a href="/cdn-cgi/l/email-protection#701d1c03131805150303494030171d11191c5e131f1d" class="contact-email"><span class="__cf_email__" data-cfemail="6b06071808031e0e1818525b2b0c060a020745080406">[email&#160;protected]</span></a><br><a href="tel:+13175040385" class="contact-email" style="margin-top:0.5rem; display:inline-block;">(+1) 317-504-0385</a>
+      </div>
+    </section>
+
+    <!-- CASE STUDY MODAL -->
+    <div id="cs-modal" style="display:none; position:fixed; inset:0; z-index:999; background:rgba(10,10,10,0.85); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); align-items:center; justify-content:center;">
+      <div style="position:relative; width:92vw; max-width:1200px; height:88vh; background:#0e0e0e; border-radius:4px; overflow:hidden; display:flex; flex-direction:column;">
+        <div id="cs-modal-header" style="display:flex; align-items:center; justify-content:space-between; padding:0.75rem 1.25rem; flex-shrink:0;">
+          <span id="cs-modal-title" style="font-family:'DM Sans',sans-serif; font-size:0.62rem; letter-spacing:0.18em; text-transform:uppercase;"></span>
+          <button onclick="closeCaseStudy()" id="cs-close-btn" style="background:none; font-family:'DM Sans',sans-serif; font-size:0.62rem; letter-spacing:0.14em; text-transform:uppercase; padding:6px 16px; cursor:pointer; border-radius:2px; transition:background 0.2s;">Close ✕</button>
+        </div>
+        <div id="cs-modal-content" style="flex:1; overflow-y:auto; font-family:'DM Sans',sans-serif; line-height:1.7;"></div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <span>© 2026 Michael Schuessler</span>
+      <span>Atelier Portfolio</span>
+    </footer>
+
+  </div>
+
+  <script>
+    var licensingCSS = `
+      #cs-modal-content { background:#0e0e0e; color:#f5f2ec; }
+      #cs-modal-content .lcs-hero { padding:80px 60px 60px; border-bottom:1px solid rgba(200,169,110,0.25); max-width:1100px; margin:0 auto; }
+      #cs-modal-content .lcs-hero-label { font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:#c8a96e; margin-bottom:20px; font-family:'DM Sans',sans-serif; }
+      #cs-modal-content .lcs-hero h1 { font-family:'DM Serif Display',serif; font-size:clamp(36px,5vw,60px); line-height:1.1; color:#f5f2ec; max-width:700px; }
+      #cs-modal-content .lcs-hero h1 em { font-style:italic; color:#c8a96e; }
+      #cs-modal-content .lcs-hero-meta { display:flex; gap:40px; margin-top:40px; flex-wrap:wrap; }
+      #cs-modal-content .lcs-hero-meta label { display:block; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#6b6b6b; margin-bottom:4px; font-family:'DM Sans',sans-serif; }
+      #cs-modal-content .lcs-hero-meta span { font-size:15px; font-weight:500; color:#f5f2ec; font-family:'DM Sans',sans-serif; }
+      #cs-modal-content .lcs-stats { display:grid; grid-template-columns:repeat(3,1fr); max-width:1100px; margin:0 auto; border-bottom:1px solid rgba(200,169,110,0.25); }
+      #cs-modal-content .lcs-stat { padding:40px 60px; border-right:1px solid rgba(200,169,110,0.25); }
+      #cs-modal-content .lcs-stat:last-child { border-right:none; }
+      #cs-modal-content .lcs-stat-num { font-family:'DM Serif Display',serif; font-size:48px; color:#c8a96e; line-height:1; margin-bottom:8px; }
+      #cs-modal-content .lcs-stat-label { font-size:13px; color:#6b6b6b; line-height:1.4; font-family:'DM Sans',sans-serif; }
+      #cs-modal-content .lcs-section { max-width:1100px; margin:0 auto; padding:64px 60px; border-bottom:1px solid rgba(200,169,110,0.25); }
+      #cs-modal-content .lcs-section:last-child { border-bottom:none; }
+      #cs-modal-content .lcs-section-header { display:flex; align-items:baseline; gap:16px; margin-bottom:40px; }
+      #cs-modal-content .lcs-section-num { font-family:'DM Serif Display',serif; font-size:13px; color:#c8a96e; letter-spacing:0.08em; }
+      #cs-modal-content .lcs-section-title { font-family:'DM Serif Display',serif; font-size:28px; color:#f5f2ec; }
+      #cs-modal-content .lcs-stories-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:1px; background:rgba(200,169,110,0.25); border:1px solid rgba(200,169,110,0.25); border-radius:12px; overflow:hidden; }
+      #cs-modal-content .lcs-story-card { background:#1a1a1a; padding:28px; }
+      #cs-modal-content .lcs-story-persona { display:inline-flex; align-items:center; gap:8px; background:rgba(200,169,110,0.12); border:1px solid rgba(200,169,110,0.25); border-radius:100px; padding:4px 12px 4px 4px; margin-bottom:16px; }
+      #cs-modal-content .lcs-persona-dot { width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:500; font-family:'DM Sans',sans-serif; }
+      #cs-modal-content .lcs-story-persona span { font-size:12px; color:#c8a96e; font-weight:500; letter-spacing:0.04em; font-family:'DM Sans',sans-serif; }
+      #cs-modal-content .lcs-story-text { font-size:14px; line-height:1.65; color:#ccc; margin-bottom:16px; font-family:'DM Sans',sans-serif; }
+      #cs-modal-content .lcs-story-text strong { color:#f5f2ec; font-weight:500; }
+      #cs-modal-content .lcs-story-acceptance { border-top:1px solid rgba(200,169,110,0.25); padding-top:14px; }
+      #cs-modal-content .lcs-story-acceptance-label { font-size:10px; text-transform:uppercase; letter-spacing:0.14em; color:#6b6b6b; margin-bottom:8px; font-family:'DM Sans',sans-serif; }
+      #cs-modal-content .lcs-criteria-item { display:flex; align-items:flex-start; gap:8px; font-size:12px; color:#aaa; margin-bottom:6px; line-height:1.5; font-family:'DM Sans',sans-serif; }
+      #cs-modal-content .lcs-criteria-item::before { content:''; width:5px; height:5px; border-radius:50%; background:#4caf82; margin-top:5px; flex-shrink:0; }
+      #cs-modal-content .lcs-prd-layout { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+      #cs-modal-content .lcs-prd-card { background:#1a1a1a; border:1px solid rgba(200,169,110,0.25); border-radius:12px; padding:28px; }
+      #cs-modal-content .lcs-prd-card.full { grid-column:1/-1; }
+      #cs-modal-content .lcs-prd-card-label { font-size:10px; text-transform:uppercase; letter-spacing:0.14em; color:#c8a96e; margin-bottom:14px; font-family:'DM Sans',sans-serif; }
+      #cs-modal-content .lcs-prd-card h3 { font-family:'DM Serif Display',serif; font-size:18px; color:#f5f2ec; margin-bottom:12px; font-weight:400; }
+      #cs-modal-content .lcs-prd-card p { font-size:14px; color:#aaa; line-height:1.65; font-family:'DM Sans',sans-serif; }
+      #cs-modal-content .lcs-prd-list { list-style:none; margin-top:12px; }
+      #cs-modal-content .lcs-prd-list li { font-size:14px; color:#aaa; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05); display:flex; align-items:flex-start; gap:10px; line-height:1.5; font-family:'DM Sans',sans-serif; }
+      #cs-modal-content .lcs-prd-list li:last-child { border-bottom:none; }
+      #cs-modal-content .lcs-prd-list li::before { content:'→'; color:#c8a96e; font-size:12px; margin-top:1px; flex-shrink:0; }
+      #cs-modal-content .lcs-badge { display:inline-block; font-size:10px; padding:2px 8px; border-radius:100px; font-weight:500; flex-shrink:0; margin-left:auto; letter-spacing:0.05em; }
+      #cs-modal-content .lcs-p1 { background:rgba(224,112,112,0.15); color:#e07070; }
+      #cs-modal-content .lcs-p2 { background:rgba(200,169,110,0.15); color:#c8a96e; }
+      #cs-modal-content .lcs-p3 { background:rgba(76,175,130,0.12); color:#4caf82; }
+      #cs-modal-content .lcs-roadmap-wrap { overflow-x:auto; }
+      #cs-modal-content .lcs-roadmap { min-width:700px; position:relative; padding:20px 0 40px; }
+      #cs-modal-content .lcs-roadmap-spine { position:absolute; left:0; right:0; top:50px; height:2px; background:linear-gradient(90deg,transparent 0%,rgba(200,169,110,0.25) 5%,rgba(200,169,110,0.25) 95%,transparent 100%); }
+      #cs-modal-content .lcs-roadmap-phases { display:grid; grid-template-columns:repeat(4,1fr); gap:0; position:relative; }
+      #cs-modal-content .lcs-phase { display:flex; flex-direction:column; align-items:center; padding:0 12px; }
+      #cs-modal-content .lcs-phase-dot-wrap { position:relative; margin-bottom:16px; margin-top:28px; }
+      #cs-modal-content .lcs-phase-dot { width:16px; height:16px; border-radius:50%; border:2px solid #c8a96e; background:#0e0e0e; position:relative; z-index:2; }
+      #cs-modal-content .lcs-phase-dot.complete { background:#c8a96e; }
+      #cs-modal-content .lcs-phase-dot-ring { position:absolute; top:-6px; left:-6px; width:28px; height:28px; border-radius:50%; border:1px solid rgba(200,169,110,0.25); z-index:1; }
+      #cs-modal-content .lcs-phase-duration { font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:#c8a96e; margin-bottom:10px; text-align:center; font-family:'DM Sans',sans-serif; }
+      #cs-modal-content .lcs-phase-title { font-family:'DM Serif Display',serif; font-size:16px; color:#f5f2ec; text-align:center; margin-bottom:8px; font-weight:400; }
+      #cs-modal-content .lcs-phase-tasks { list-style:none; text-align:center; width:100%; }
+      #cs-modal-content .lcs-phase-tasks li { font-size:11px; color:#6b6b6b; padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.04); line-height:1.4; font-family:'DM Sans',sans-serif; }
+      #cs-modal-content .lcs-phase-tasks li:last-child { border-bottom:none; }
+      #cs-modal-content .lcs-flow-diagram { background:#1a1a1a; border:1px solid rgba(200,169,110,0.25); border-radius:12px; padding:40px; overflow-x:auto; }
+      #cs-modal-content .lcs-flow-legend { display:flex; gap:24px; margin-top:24px; flex-wrap:wrap; }
+      #cs-modal-content .lcs-legend-item { display:flex; align-items:center; gap:8px; font-size:12px; color:#6b6b6b; font-family:'DM Sans',sans-serif; }
+      #cs-modal-content .lcs-legend-swatch { width:28px; height:10px; border-radius:2px; }
+      #cs-modal-content .lcs-outcomes-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:rgba(200,169,110,0.25); border:1px solid rgba(200,169,110,0.25); border-radius:12px; overflow:hidden; margin-bottom:32px; }
+      #cs-modal-content .lcs-outcome-card { background:#1a1a1a; padding:28px; }
+      #cs-modal-content .lcs-outcome-val { font-family:'DM Serif Display',serif; font-size:32px; color:#c8a96e; margin-bottom:6px; line-height:1; }
+      #cs-modal-content .lcs-outcome-desc { font-size:13px; color:#6b6b6b; line-height:1.5; font-family:'DM Sans',sans-serif; }
+    `;
+
+    var mobileCSS = `
+      #cs-modal-content { background:#0e0e0e; color:#f5f2ec; }
+      #cs-modal-content .mcs-hero { padding:80px 60px 60px; border-bottom:1px solid rgba(79,196,160,0.2); max-width:1100px; margin:0 auto; }
+      #cs-modal-content .mcs-hero-label { font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:#4fc4a0; margin-bottom:20px; font-family:'DM Sans',sans-serif; }
+      #cs-modal-content .mcs-hero h1 { font-family:'DM Serif Display',serif; font-size:clamp(36px,5vw,60px); line-height:1.1; color:#f5f2ec; max-width:700px; }
+      #cs-modal-content .mcs-hero h1 em { font-style:italic; color:#4fc4a0; }
+      #cs-modal-content .mcs-hero-meta { display:flex; gap:40px; margin-top:40px; flex-wrap:wrap; }
+      #cs-modal-content .mcs-hero-meta label { display:block; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#6b6b6b; margin-bottom:4px; font-family:'DM Sans',sans-serif; }
+      #cs-modal-content .mcs-hero-meta span { font-size:15px; font-weight:500; color:#f5f2ec; font-family:'DM Sans',sans-serif; }
+      #cs-modal-content .mcs-stats { display:grid; grid-template-columns:repeat(3,1fr); max-width:1100px; margin:0 auto; border-bottom:1px solid rgba(79,196,160,0.2); }
+      #cs-modal-content .mcs-stat { padding:40px 60px; border-right:1px solid rgba(79,196,160,0.2); }
+      #cs-modal-content .mcs-stat:last-child { border-right:none; }
+      #cs-modal-content .mcs-stat-num { font-family:'DM Serif Display',serif; font-size:48px; color:#4fc4a0; line-height:1; margin-bottom:8px; }
+      #cs-modal-content .mcs-stat-label { font-size:13px; color:#6b6b6b; line-height:1.4; font-family:'DM Sans',sans-serif; }
+      #cs-modal-content .mcs-section { max-width:1100px; margin:0 auto; padding:64px 60px; border-bottom:1px solid rgba(79,196,160,0.2); }
+      #cs-modal-content .mcs-section:last-child { border-bottom:none; }
+      #cs-modal-content .mcs-section-header { display:flex; align-items:baseline; gap:16px; margin-bottom:40px; }
+      #cs-modal-content .mcs-section-num { font-family:'DM Serif Display',serif; font-size:13px; color:#4fc4a0; letter-spacing:0.08em; }
+      #cs-modal-content .mcs-section-title { font-family:'DM Serif Display',serif; font-size:28px; color:#f5f2ec; }
+      #cs-modal-content .mcs-ba-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:rgba(79,196,160,0.2); border:1px solid rgba(79,196,160,0.2); border-radius:12px; overflow:hidden; }
+      #cs-modal-content .mcs-ba-card { background:#1a1a1a; padding:32px; }
+      #cs-modal-content .mcs-ba-card.after { background:#222; }
+      #cs-modal-content .mcs-ba-label { font-size:10px; text-transform:uppercase; letter-spacing:0.16em; margin-bottom:20px; font-weight:500; font-family:'DM Sans',sans-serif; }
+      #cs-modal-content .mcs-ba-label.before-label { color:#e07070; }
+      #cs-modal-content .mcs-ba-label.after-label { color:#4fc4a0; }
+      #cs-modal-content .mcs-ba-metric { display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.05); font-size:13px; font-family:'DM Sans',sans-serif; }
+      #cs-modal-content .mcs-ba-metric:last-child { border-bottom:none; }
+      #cs-modal-content .mcs-ba-metric-label { color:#6b6b6b; }
+      #cs-modal-content .mcs-ba-metric-val { font-weight:500; }
+      #cs-modal-content .mcs-ba-metric-val.negative { color:#e07070; }
+      #cs-modal-content .mcs-ba-metric-val.positive { color:#4fc4a0; }
+      #cs-modal-content .mcs-prd-layout { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+      #cs-modal-content .mcs-prd-card { background:#1a1a1a; border:1px solid rgba(79,196,160,0.2); border-radius:12px; padding:28px; }
+      #cs-modal-content .mcs-prd-card.full { grid-column:1/-1; }
+      #cs-modal-content .mcs-prd-card-label { font-size:10px; text-transform:uppercase; letter-spacing:0.14em; color:#4fc4a0; margin-bottom:14px; font-family:'DM Sans',sans-serif; }
+      #cs-modal-content .mcs-prd-card h3 { font-family:'DM Serif Display',serif; font-size:18px; color:#f5f2ec; margin-bottom:12px; font-weight:400; }
+      #cs-modal-content .mcs-prd-card p { font-size:14px; color:#aaa; line-height:1.65; font-family:'DM Sans',sans-serif; }
+      #cs-modal-content .mcs-prd-list { list-style:none; margin-top:12px; }
+      #cs-modal-content .mcs-prd-list li { font-size:14px; color:#aaa; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05); display:flex; align-items:flex-start; justify-content:space-between; gap:10px; line-height:1.5; font-family:'DM Sans',sans-serif; }
+      #cs-modal-content .mcs-prd-list li:last-child { border-bottom:none; }
+      #cs-modal-content .mcs-prd-list li::before { content:'→'; color:#4fc4a0; font-size:12px; margin-top:1px; flex-shrink:0; }
+      #cs-modal-content .mcs-prd-list li .li-text { display:flex; align-items:flex-start; gap:10px; flex:1; }
+      #cs-modal-content .mcs-prd-list li .li-text::before { content:none; }
+      #cs-modal-content .mcs-badge { display:inline-block; font-size:10px; padding:2px 8px; border-radius:100px; font-weight:500; flex-shrink:0; align-self:flex-start; letter-spacing:0.05em; }
+      #cs-modal-content .mcs-p1 { background:rgba(224,112,112,0.15); color:#e07070; }
+      #cs-modal-content .mcs-p2 { background:rgba(200,169,110,0.15); color:#c8a96e; }
+      #cs-modal-content .mcs-p3 { background:rgba(79,196,160,0.12); color:#4fc4a0; }
+      #cs-modal-content .mcs-roadmap-wrap { overflow-x:auto; }
+      #cs-modal-content .mcs-roadmap { min-width:700px; position:relative; padding:20px 0 40px; }
+      #cs-modal-content .mcs-roadmap-spine { position:absolute; left:0; right:0; top:50px; height:2px; background:linear-gradient(90deg,transparent 0%,rgba(79,196,160,0.2) 5%,rgba(79,196,160,0.2) 95%,transparent 100%); }
+      #cs-modal-content .mcs-roadmap-phases { display:grid; grid-template-columns:repeat(4,1fr); gap:0; position:relative; }
+      #cs-modal-content .mcs-phase { display:flex; flex-direction:column; align-items:center; padding:0 12px; }
+      #cs-modal-content .mcs-phase-dot-wrap { position:relative; margin-bottom:16px; margin-top:28px; }
+      #cs-modal-content .mcs-phase-dot { width:16px; height:16px; border-radius:50%; border:2px solid #4fc4a0; background:#0e0e0e; position:relative; z-index:2; }
+      #cs-modal-content .mcs-phase-dot.complete { background:#4fc4a0; }
+      #cs-modal-content .mcs-phase-dot-ring { position:absolute; top:-6px; left:-6px; width:28px; height:28px; border-radius:50%; border:1px solid rgba(79,196,160,0.2); z-index:1; }
+      #cs-modal-content .mcs-phase-duration { font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:#4fc4a0; margin-bottom:10px; text-align:center; font-family:'DM Sans',sans-serif; }
+      #cs-modal-content .mcs-phase-title { font-family:'DM Serif Display',serif; font-size:16px; color:#f5f2ec; text-align:center; margin-bottom:8px; font-weight:400; }
+      #cs-modal-content .mcs-phase-tasks { list-style:none; text-align:center; width:100%; }
+      #cs-modal-content .mcs-phase-tasks li { font-size:11px; color:#6b6b6b; padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.04); line-height:1.4; font-family:'DM Sans',sans-serif; }
+      #cs-modal-content .mcs-phase-tasks li:last-child { border-bottom:none; }
+      #cs-modal-content .mcs-flow-diagram { background:#1a1a1a; border:1px solid rgba(79,196,160,0.2); border-radius:12px; padding:40px; overflow-x:auto; }
+      #cs-modal-content .mcs-flow-legend { display:flex; gap:24px; margin-top:24px; flex-wrap:wrap; }
+      #cs-modal-content .mcs-legend-item { display:flex; align-items:center; gap:8px; font-size:12px; color:#6b6b6b; font-family:'DM Sans',sans-serif; }
+      #cs-modal-content .mcs-legend-swatch { width:28px; height:10px; border-radius:2px; }
+      #cs-modal-content .mcs-outcomes-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:rgba(79,196,160,0.2); border:1px solid rgba(79,196,160,0.2); border-radius:12px; overflow:hidden; margin-bottom:32px; }
+      #cs-modal-content .mcs-outcome-card { background:#1a1a1a; padding:28px; }
+      #cs-modal-content .mcs-outcome-val { font-family:'DM Serif Display',serif; font-size:32px; color:#4fc4a0; margin-bottom:6px; line-height:1; }
+      #cs-modal-content .mcs-outcome-desc { font-size:13px; color:#6b6b6b; line-height:1.5; font-family:'DM Sans',sans-serif; }
+    `;
+
+    var licensingHTML = `<section class="lcs-hero"><p class="lcs-hero-label">Shift Markets &nbsp;·&nbsp; 2019–2022 &nbsp;·&nbsp; Product Management</p><h1>U.S. Market <em>Licensing</em><br>Expansion</h1><div class="lcs-hero-meta"><div><label>Role</label><span>Project Manager (Product Lead)</span></div><div><label>Duration</label><span>9 months</span></div><div><label>Team</label><span>Compliance, Legal, Engineering, Design</span></div><div><label>Outcome</label><span>36-state operational readiness</span></div></div></section><div class="lcs-stats"><div class="lcs-stat"><div class="lcs-stat-num">36</div><div class="lcs-stat-label">U.S. states licensed &amp; operationally ready for market entry</div></div><div class="lcs-stat"><div class="lcs-stat-num">9mo</div><div class="lcs-stat-label">End-to-end delivery timeline from scoping to full deployment</div></div><div class="lcs-stat"><div class="lcs-stat-num">~$12M</div><div class="lcs-stat-label">New annual client market opportunity unlocked</div></div></div><section class="lcs-section"><div class="lcs-section-header"><span class="lcs-section-num">01</span><h2 class="lcs-section-title">User Stories</h2></div><div class="lcs-stories-grid"><div class="lcs-story-card"><div class="lcs-story-persona"><div class="lcs-persona-dot" style="background:rgba(155,127,212,0.2);color:#9b7fd4;">CO</div><span>Compliance Officer</span></div><p class="lcs-story-text">As a <strong>Compliance Officer</strong>, I want to map each U.S. state's regulatory requirements to specific platform controls so that the company can demonstrate licensing readiness to regulators without manual intervention.</p><div class="lcs-story-acceptance"><p class="lcs-story-acceptance-label">Acceptance Criteria</p><div class="lcs-criteria-item">Each state requirement is tagged to a corresponding platform feature or configuration</div><div class="lcs-criteria-item">A compliance matrix document is maintained and version-controlled</div><div class="lcs-criteria-item">All gaps have a documented resolution path and owner</div></div></div><div class="lcs-story-card"><div class="lcs-story-persona"><div class="lcs-persona-dot" style="background:rgba(200,169,110,0.2);color:#c8a96e;">BD</div><span>Business Development Lead</span></div><p class="lcs-story-text">As a <strong>Business Development Lead</strong>, I want a single source of truth for which states are licensed and operationally ready so that I can accurately represent our market access to prospective clients.</p><div class="lcs-story-acceptance"><p class="lcs-story-acceptance-label">Acceptance Criteria</p><div class="lcs-criteria-item">A real-time licensing status dashboard is accessible to sales and BD teams</div><div class="lcs-criteria-item">Each state entry shows license status, active restrictions, and go-live date</div><div class="lcs-criteria-item">Status updates are reflected within 24 hours of a change</div></div></div><div class="lcs-story-card"><div class="lcs-story-persona"><div class="lcs-persona-dot" style="background:rgba(76,175,130,0.2);color:#4caf82;">ENG</div><span>Platform Engineer</span></div><p class="lcs-story-text">As a <strong>Platform Engineer</strong>, I want regulatory requirements to be translated into clearly scoped technical tasks so that I can build and configure platform functionality without ambiguity in compliance intent.</p><div class="lcs-story-acceptance"><p class="lcs-story-acceptance-label">Acceptance Criteria</p><div class="lcs-criteria-item">Each compliance requirement has a corresponding engineering ticket with full context</div><div class="lcs-criteria-item">Acceptance criteria for each ticket are co-authored with legal/compliance</div><div class="lcs-criteria-item">QA sign-off references the original regulatory source document</div></div></div><div class="lcs-story-card"><div class="lcs-story-persona"><div class="lcs-persona-dot" style="background:rgba(232,118,112,0.2);color:#e87070;">CE</div><span>Client (Exchange Operator)</span></div><p class="lcs-story-text">As a <strong>Client (Exchange Operator)</strong>, I want assurance that the platform I'm licensing meets applicable state-level regulatory standards so that I can operate with confidence and avoid downstream legal exposure.</p><div class="lcs-story-acceptance"><p class="lcs-story-acceptance-label">Acceptance Criteria</p><div class="lcs-criteria-item">Client-facing documentation outlines platform compliance posture per state</div><div class="lcs-criteria-item">Onboarding agreements reflect applicable state-specific obligations</div><div class="lcs-criteria-item">Support process is in place for client compliance inquiries post-launch</div></div></div><div class="lcs-story-card"><div class="lcs-story-persona"><div class="lcs-persona-dot" style="background:rgba(200,169,110,0.2);color:#c8a96e;">LG</div><span>Legal Counsel</span></div><p class="lcs-story-text">As <strong>Legal Counsel</strong>, I want regulatory filings and platform configurations to be tightly coupled so that any change to the platform that affects compliance posture triggers a review process before release.</p><div class="lcs-story-acceptance"><p class="lcs-story-acceptance-label">Acceptance Criteria</p><div class="lcs-criteria-item">A change-control checklist is enforced for compliance-adjacent releases</div><div class="lcs-criteria-item">Legal is included as a required reviewer on applicable PRs or release notes</div><div class="lcs-criteria-item">Audit trail exists for all compliance-related platform changes</div></div></div><div class="lcs-story-card"><div class="lcs-story-persona"><div class="lcs-persona-dot" style="background:rgba(155,127,212,0.2);color:#9b7fd4;">PM</div><span>Product Manager</span></div><p class="lcs-story-text">As the <strong>Product Manager</strong>, I want a prioritized backlog that balances regulatory deadlines, engineering capacity, and business urgency so that we deliver market readiness in the fastest viable sequence.</p><div class="lcs-story-acceptance"><p class="lcs-story-acceptance-label">Acceptance Criteria</p><div class="lcs-criteria-item">Backlog is maintained in Asana with priority, effort, and regulatory deadline fields</div><div class="lcs-criteria-item">Sprint planning sessions incorporate compliance milestone calendar</div><div class="lcs-criteria-item">Weekly stakeholder update covers progress, blockers, and risk flags</div></div></div></div></section><section class="lcs-section"><div class="lcs-section-header"><span class="lcs-section-num">02</span><h2 class="lcs-section-title">Product Requirements Document</h2></div><div class="lcs-prd-layout"><div class="lcs-prd-card full"><p class="lcs-prd-card-label">Overview &amp; Problem Statement</p><h3>Enabling U.S. market entry through compliant platform infrastructure</h3><p>Shift Markets sought to expand our digital asset exchange platform offering in the U.S. market. This required translating a complex, state-by-state regulatory landscape into concrete platform functionality covering KYC/AML workflows, data residency, transaction monitoring, and state-specific licensing requirements. Without these capabilities, the company could not onboard U.S.-based clients or operate legally in many states.</p></div><div class="lcs-prd-card"><p class="lcs-prd-card-label">Goals</p><ul class="lcs-prd-list"><li>Achieve operational licensing readiness across 36 U.S. states within 9 months</li><li>Build a platform compliance layer that could be toggled by state or client configuration</li><li>Create internal tooling for compliance teams to monitor and manage licensing status</li><li>Establish a repeatable process for entering additional states post-launch</li><li>Federal regulatory filings (handled separately by legal team)</li><li>Full self-serve compliance management for clients (Phase 2)</li></ul></div><div class="lcs-prd-card"><p class="lcs-prd-card-label">Feature Requirements</p><ul class="lcs-prd-list"><li>State-level licensing status dashboard (internal) <span class="lcs-badge lcs-p1">P1</span></li><li>KYC/AML identity verification with state-configurable thresholds <span class="lcs-badge lcs-p1">P1</span></li><li>Transaction monitoring &amp; suspicious activity reporting module <span class="lcs-badge lcs-p1">P1</span></li><li>Data residency controls and U.S.-region infrastructure routing <span class="lcs-badge lcs-p1">P1</span></li><li>Compliance audit log with exportable records for regulators <span class="lcs-badge lcs-p2">P2</span></li><li>Client-facing compliance documentation portal <span class="lcs-badge lcs-p2">P2</span></li><li>Automated regulatory change alerts for licensed states <span class="lcs-badge lcs-p3">P3</span></li><li>State expansion self-service workflow for compliance team <span class="lcs-badge lcs-p3">P3</span></li><li>Regulatory deadline calendar with automated stakeholder notifications <span class="lcs-badge lcs-p3">P3</span></li></ul></div><div class="lcs-prd-card"><p class="lcs-prd-card-label">Constraints &amp; Dependencies</p><ul class="lcs-prd-list"><li>Legal and compliance sign-off required before any state can be marked live</li><li>Third-party KYC vendor integration (onboarding timeline ~6 weeks)</li><li>State licensing applications must run in parallel with platform build</li><li>Engineering capacity shared across two concurrent initiatives</li><li>Regulatory landscape subject to change during development cycle</li></ul></div><div class="lcs-prd-card"><p class="lcs-prd-card-label">Success Metrics</p><ul class="lcs-prd-list"><li>36 states reach compliance-ready status within 9-month window</li><li>Zero compliance-related blockers on first 3 U.S. client onboardings</li><li>100% of P1 features shipped before first client go-live</li><li>Internal compliance team can update state status without engineering support</li></ul></div></div></section><section class="lcs-section"><div class="lcs-section-header"><span class="lcs-section-num">03</span><h2 class="lcs-section-title">Project Roadmap</h2></div><div class="lcs-roadmap-wrap"><div class="lcs-roadmap"><div class="lcs-roadmap-spine"></div><div class="lcs-roadmap-phases"><div class="lcs-phase"><div class="lcs-phase-dot-wrap"><div class="lcs-phase-dot complete"></div><div class="lcs-phase-dot-ring"></div></div><p class="lcs-phase-duration">Month 1</p><p class="lcs-phase-title">Discovery &amp; Scoping</p><ul class="lcs-phase-tasks"><li>State-by-state regulatory audit</li><li>Compliance gap analysis</li><li>Vendor evaluation (KYC)</li><li>Stakeholder alignment</li><li>Roadmap v1 signed off</li></ul></div><div class="lcs-phase"><div class="lcs-phase-dot-wrap"><div class="lcs-phase-dot complete"></div><div class="lcs-phase-dot-ring"></div></div><p class="lcs-phase-duration">Months 2–5</p><p class="lcs-phase-title">Core Platform Build</p><ul class="lcs-phase-tasks"><li>KYC/AML integration</li><li>Transaction monitoring</li><li>Data residency controls</li><li>Internal compliance dashboard</li><li>State config framework</li></ul></div><div class="lcs-phase"><div class="lcs-phase-dot-wrap"><div class="lcs-phase-dot complete"></div><div class="lcs-phase-dot-ring"></div></div><p class="lcs-phase-duration">Months 5–7</p><p class="lcs-phase-title">Legal Review &amp; QA</p><ul class="lcs-phase-tasks"><li>Legal sign-off per state batch</li><li>Compliance QA testing</li><li>Audit log validation</li><li>P2 features shipped</li><li>Soft launch: first 10 states</li></ul></div><div class="lcs-phase"><div class="lcs-phase-dot-wrap"><div class="lcs-phase-dot complete"></div><div class="lcs-phase-dot-ring"></div></div><p class="lcs-phase-duration">Months 7–9</p><p class="lcs-phase-title">Full Rollout &amp; Handoff</p><ul class="lcs-phase-tasks"><li>Remaining 25 states live</li><li>Client onboarding handoff</li><li>Documentation published</li><li>Compliance runbook created</li><li>36-state readiness achieved</li></ul></div></div></div></div><div style="margin-top:32px;"><div style="display:grid;grid-template-columns:160px 1fr;gap:0;row-gap:8px;align-items:center;"><div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#6b6b6b;font-family:'DM Sans',sans-serif;">Discovery &amp; Scoping</div><div style="position:relative;height:28px;"><div style="position:absolute;left:0%;width:11%;height:100%;background:rgba(155,127,212,0.3);border-radius:4px;display:flex;align-items:center;padding:0 10px;"><span style="font-size:11px;color:#9b7fd4;white-space:nowrap;font-family:'DM Sans',sans-serif;">Mo. 1</span></div></div><div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#6b6b6b;font-family:'DM Sans',sans-serif;">Core Platform Build</div><div style="position:relative;height:28px;"><div style="position:absolute;left:11%;width:44%;height:100%;background:rgba(200,169,110,0.3);border-radius:4px;display:flex;align-items:center;padding:0 10px;"><span style="font-size:11px;color:#c8a96e;white-space:nowrap;font-family:'DM Sans',sans-serif;">Mo. 2–5</span></div></div><div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#6b6b6b;font-family:'DM Sans',sans-serif;">Legal Review &amp; QA</div><div style="position:relative;height:28px;"><div style="position:absolute;left:55%;width:22%;height:100%;background:rgba(76,175,130,0.25);border-radius:4px;display:flex;align-items:center;padding:0 10px;"><span style="font-size:11px;color:#4caf82;white-space:nowrap;font-family:'DM Sans',sans-serif;">Mo. 5–7</span></div></div><div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#6b6b6b;font-family:'DM Sans',sans-serif;">Full Rollout</div><div style="position:relative;height:28px;"><div style="position:absolute;left:77%;width:23%;height:100%;background:rgba(200,169,110,0.2);border:1px solid rgba(200,169,110,0.4);border-radius:4px;display:flex;align-items:center;padding:0 10px;"><span style="font-size:11px;color:#c8a96e;white-space:nowrap;font-family:'DM Sans',sans-serif;">Mo. 7–9</span></div></div></div><div style="display:grid;grid-template-columns:160px 1fr;margin-top:12px;"><div></div><div style="display:flex;justify-content:space-between;"><span style="font-size:11px;color:#6b6b6b;font-family:'DM Sans',sans-serif;">Month 1</span><span style="font-size:11px;color:#6b6b6b;font-family:'DM Sans',sans-serif;">Month 3</span><span style="font-size:11px;color:#6b6b6b;font-family:'DM Sans',sans-serif;">Month 5</span><span style="font-size:11px;color:#6b6b6b;font-family:'DM Sans',sans-serif;">Month 7</span><span style="font-size:11px;color:#6b6b6b;font-family:'DM Sans',sans-serif;">Month 9</span></div></div></div></section><section class="lcs-section"><div class="lcs-section-header"><span class="lcs-section-num">04</span><h2 class="lcs-section-title">User Flow — Regulatory Requirement to Platform Feature</h2></div><div class="lcs-flow-diagram"><svg width="100%" viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg"><defs><marker id="lcs-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#c8a96e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="lcs-arr-gray" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#555" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect x="340" y="20" width="220" height="48" rx="8" fill="rgba(155,127,212,0.18)" stroke="rgba(155,127,212,0.5)" stroke-width="0.5"/><text x="450" y="40" text-anchor="middle" font-family="DM Sans" font-size="13" font-weight="500" fill="#c4b0f0">State regulatory requirement</text><text x="450" y="57" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#9b7fd4">identified by legal/compliance</text><line x1="450" y1="68" x2="450" y2="106" stroke="#c8a96e" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#lcs-arr)"/><rect x="340" y="108" width="220" height="48" rx="8" fill="rgba(200,169,110,0.12)" stroke="rgba(200,169,110,0.4)" stroke-width="0.5"/><text x="450" y="128" text-anchor="middle" font-family="DM Sans" font-size="13" font-weight="500" fill="#e8d9b8">PM intake &amp; triage</text><text x="450" y="145" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#c8a96e">classify: platform vs. process vs. legal</text><line x1="450" y1="156" x2="450" y2="196" stroke="#c8a96e" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#lcs-arr)"/><polygon points="450,198 530,238 450,278 370,238" fill="rgba(200,169,110,0.1)" stroke="rgba(200,169,110,0.5)" stroke-width="0.5"/><text x="450" y="233" text-anchor="middle" font-family="DM Sans" font-size="12" font-weight="500" fill="#e8d9b8">Requires</text><text x="450" y="249" text-anchor="middle" font-family="DM Sans" font-size="12" font-weight="500" fill="#e8d9b8">platform change?</text><line x1="530" y1="238" x2="610" y2="238" stroke="#4caf82" stroke-width="1" marker-end="url(#lcs-arr-gray)"/><text x="568" y="230" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#4caf82">Yes</text><line x1="370" y1="238" x2="270" y2="238" stroke="#555" stroke-width="1" marker-end="url(#lcs-arr-gray)"/><text x="322" y="230" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#888">No</text><rect x="100" y="214" width="168" height="48" rx="8" fill="rgba(100,100,100,0.15)" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/><text x="184" y="234" text-anchor="middle" font-family="DM Sans" font-size="12" font-weight="500" fill="#aaa">Legal / ops update</text><text x="184" y="250" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#666">documented &amp; filed</text><rect x="612" y="214" width="180" height="48" rx="8" fill="rgba(76,175,130,0.12)" stroke="rgba(76,175,130,0.4)" stroke-width="0.5"/><text x="702" y="234" text-anchor="middle" font-family="DM Sans" font-size="12" font-weight="500" fill="#a8e6cb">Engineering ticket</text><text x="702" y="250" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#4caf82">scoped with compliance context</text><line x1="702" y1="262" x2="702" y2="302" stroke="#4caf82" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#lcs-arr-gray)"/><rect x="612" y="304" width="180" height="48" rx="8" fill="rgba(76,175,130,0.12)" stroke="rgba(76,175,130,0.4)" stroke-width="0.5"/><text x="702" y="324" text-anchor="middle" font-family="DM Sans" font-size="12" font-weight="500" fill="#a8e6cb">Sprint build &amp; review</text><text x="702" y="340" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#4caf82">PM + eng + compliance</text><line x1="702" y1="352" x2="702" y2="392" stroke="#4caf82" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#lcs-arr-gray)"/><rect x="612" y="394" width="180" height="48" rx="8" fill="rgba(200,169,110,0.1)" stroke="rgba(200,169,110,0.3)" stroke-width="0.5"/><text x="702" y="414" text-anchor="middle" font-family="DM Sans" font-size="12" font-weight="500" fill="#e8d9b8">Compliance QA</text><text x="702" y="430" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#c8a96e">legal sign-off required</text><line x1="612" y1="418" x2="550" y2="418" stroke="#c8a96e" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#lcs-arr)"/><path d="M792 418 L885 418 L885 238 L794 238" fill="none" stroke="#e87070" stroke-width="0.8" stroke-dasharray="3 3" marker-end="url(#lcs-arr-gray)"/><text x="838" y="412" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#e87070">fail → rework</text><rect x="340" y="394" width="208" height="48" rx="8" fill="rgba(200,169,110,0.18)" stroke="rgba(200,169,110,0.55)" stroke-width="0.5"/><text x="444" y="414" text-anchor="middle" font-family="DM Sans" font-size="12" font-weight="500" fill="#e8d9b8">Merge &amp; release</text><text x="444" y="430" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#c8a96e">compliance matrix updated</text><line x1="444" y1="442" x2="444" y2="482" stroke="#c8a96e" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#lcs-arr)"/><rect x="334" y="484" width="220" height="48" rx="8" fill="rgba(155,127,212,0.18)" stroke="rgba(155,127,212,0.5)" stroke-width="0.5"/><text x="444" y="504" text-anchor="middle" font-family="DM Sans" font-size="13" font-weight="500" fill="#c4b0f0">State marked operationally ready</text><text x="444" y="521" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#9b7fd4">BD notified · licensing status updated</text><line x1="184" y1="262" x2="184" y2="418" stroke="#555" stroke-width="0.8" stroke-dasharray="3 3"/><line x1="184" y1="418" x2="338" y2="418" stroke="#555" stroke-width="0.8" stroke-dasharray="3 3" marker-end="url(#lcs-arr-gray)"/><text x="248" y="412" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#666">routed to release notes</text></svg><div class="lcs-flow-legend"><div class="lcs-legend-item"><div class="lcs-legend-swatch" style="background:rgba(155,127,212,0.4);border:1px solid rgba(155,127,212,0.6);"></div>Start / End state</div><div class="lcs-legend-item"><div class="lcs-legend-swatch" style="background:rgba(200,169,110,0.3);border:1px solid rgba(200,169,110,0.5);"></div>PM / Product action</div><div class="lcs-legend-item"><div class="lcs-legend-swatch" style="background:rgba(76,175,130,0.25);border:1px solid rgba(76,175,130,0.4);"></div>Engineering path</div><div class="lcs-legend-item"><div class="lcs-legend-swatch" style="background:rgba(100,100,100,0.2);border:1px solid rgba(255,255,255,0.12);"></div>Legal / Ops path</div><div class="lcs-legend-item"><div class="lcs-legend-swatch" style="background:rgba(232,135,112,0.2);border:1px solid rgba(232,135,112,0.4);"></div>Rework / Failure loop</div></div></div></section><section class="lcs-section"><div class="lcs-section-header"><span class="lcs-section-num">05</span><h2 class="lcs-section-title">Outcomes &amp; Impact</h2></div><div class="lcs-outcomes-grid"><div class="lcs-outcome-card"><div class="lcs-outcome-val">36</div><div class="lcs-outcome-desc">States reached full operational and licensing readiness — from zero to nationwide coverage</div></div><div class="lcs-outcome-card"><div class="lcs-outcome-val">9mo</div><div class="lcs-outcome-desc">End-to-end delivery across scoping, build, legal review, QA, and full rollout</div></div><div class="lcs-outcome-card"><div class="lcs-outcome-val">~$12M</div><div class="lcs-outcome-desc">In new annual client market opportunities unlocked through U.S. market entry</div></div></div><p style="font-size:14px;color:#6b6b6b;line-height:1.7;max-width:700px;font-family:'DM Sans',sans-serif;">This initiative established the compliance infrastructure and operational model required for Shift Markets to serve U.S.-based clients.</p></section>`;
+
+    var mobileHTML = `<section class="mcs-hero"><p class="mcs-hero-label">Shift Markets &nbsp;·&nbsp; 2019–2022 &nbsp;·&nbsp; Product Management</p><h1>Mobile Trading App <em>Redesign</em></h1><div class="mcs-hero-meta"><div><label>Role</label><span>Project Manager (Product Lead)</span></div><div><label>Duration</label><span>5 months (6-month budget)</span></div><div><label>Team</label><span>8–10 Engineers, Design, 3 External Partners</span></div><div><label>Platform</label><span>iOS &amp; Android</span></div></div></section><div class="mcs-stats"><div class="mcs-stat"><div class="mcs-stat-num">+37%</div><div class="mcs-stat-label">Increase in app downloads following redesign launch</div></div><div class="mcs-stat"><div class="mcs-stat-num">+48%</div><div class="mcs-stat-label">Growth in monthly active users post-launch</div></div><div class="mcs-stat"><div class="mcs-stat-num">5mo</div><div class="mcs-stat-label">Delivered one month ahead of the 6-month budget</div></div></div><section class="mcs-section"><div class="mcs-section-header"><span class="mcs-section-num">01</span><h2 class="mcs-section-title">Before &amp; After</h2></div><div class="mcs-ba-grid"><div class="mcs-ba-card"><p class="mcs-ba-label before-label">Before — State of the App</p><div class="mcs-ba-metric"><span class="mcs-ba-metric-label">Brand alignment</span><span class="mcs-ba-metric-val negative">Inconsistent &amp; off-brand</span></div><div class="mcs-ba-metric"><span class="mcs-ba-metric-label">Design quality</span><span class="mcs-ba-metric-val negative">Outdated UI patterns</span></div><div class="mcs-ba-metric"><span class="mcs-ba-metric-label">User engagement</span><span class="mcs-ba-metric-val negative">Low MAU &amp; retention</span></div><div class="mcs-ba-metric"><span class="mcs-ba-metric-label">Download trajectory</span><span class="mcs-ba-metric-val negative">Stagnant &amp; declining</span></div><div class="mcs-ba-metric"><span class="mcs-ba-metric-label">KYC / ID verification</span><span class="mcs-ba-metric-val negative">Fragmented flow</span></div><div class="mcs-ba-metric"><span class="mcs-ba-metric-label">Payment integrations</span><span class="mcs-ba-metric-val negative">Limited &amp; unstable</span></div><div class="mcs-ba-metric"><span class="mcs-ba-metric-label">Wallet UX</span><span class="mcs-ba-metric-val negative">Confusing &amp; error-prone</span></div></div><div class="mcs-ba-card after"><p class="mcs-ba-label after-label">After — Redesigned App</p><div class="mcs-ba-metric"><span class="mcs-ba-metric-label">Brand alignment</span><span class="mcs-ba-metric-val positive">Cohesive, modern identity</span></div><div class="mcs-ba-metric"><span class="mcs-ba-metric-label">Design quality</span><span class="mcs-ba-metric-val positive">Updated design system</span></div><div class="mcs-ba-metric"><span class="mcs-ba-metric-label">User engagement</span><span class="mcs-ba-metric-val positive">+48% MAU growth</span></div><div class="mcs-ba-metric"><span class="mcs-ba-metric-label">Download trajectory</span><span class="mcs-ba-metric-val positive">+37% download increase</span></div><div class="mcs-ba-metric"><span class="mcs-ba-metric-label">KYC / ID verification</span><span class="mcs-ba-metric-val positive">Streamlined, compliant flow</span></div><div class="mcs-ba-metric"><span class="mcs-ba-metric-label">Payment integrations</span><span class="mcs-ba-metric-val positive">3 stable partner integrations</span></div><div class="mcs-ba-metric"><span class="mcs-ba-metric-label">Wallet UX</span><span class="mcs-ba-metric-val positive">Intuitive &amp; reliable</span></div></div></div></section><section class="mcs-section"><div class="mcs-section-header"><span class="mcs-section-num">02</span><h2 class="mcs-section-title">Product Requirements Document</h2></div><div class="mcs-prd-layout"><div class="mcs-prd-card full"><p class="mcs-prd-card-label">Overview &amp; Problem Statement</p><h3>Rebuilding a crypto trading app from the ground up — brand, UX, and infrastructure</h3><p>Shift Markets' mobile trading application was underperforming across every key metric. The existing product suffered from outdated design, brand inconsistency, and a fragmented user experience — particularly across the onboarding, KYC verification, wallet management, and payment integration flows. A full rebuild was required to modernize the application, re-align it with brand standards, and deliver the core trading experience users expected.</p></div><div class="mcs-prd-card"><p class="mcs-prd-card-label">Goals</p><ul class="mcs-prd-list"><li>Rebuild the mobile app with a modern, on-brand design system across iOS and Android</li><li>Redesign core user flows — onboarding, KYC, wallet, trading, and payment integrations</li><li>Integrate 3 external payment and data partners with stable, tested connections</li><li>Deliver a product that drives measurable improvement in downloads and MAU</li><li>Ship within or ahead of the 6-month delivery window</li></ul></div><div class="mcs-prd-card"><p class="mcs-prd-card-label">Constraints &amp; Dependencies</p><ul class="mcs-prd-list"><li>Cross-functional team of 8–10 engineers across front-end, back-end, and mobile</li><li>3 external partner integrations with independent onboarding timelines</li><li>KYC/AML compliance requirements must be embedded into redesigned onboarding</li><li>Existing back-end infrastructure to be preserved — front-end and UX rebuild only</li><li>Parallel iOS and Android delivery required throughout</li></ul></div><div class="mcs-prd-card"><p class="mcs-prd-card-label">Feature Requirements</p><ul class="mcs-prd-list"><li><span class="li-text">Full UI/UX redesign with new design system and component library</span><span class="mcs-badge mcs-p1">P1</span></li><li><span class="li-text">Redesigned onboarding and KYC/ID verification flow</span><span class="mcs-badge mcs-p1">P1</span></li><li><span class="li-text">Wallet management — create, fund, transfer, and view balances</span><span class="mcs-badge mcs-p1">P1</span></li><li><span class="li-text">Live trading interface — order placement, portfolio view, price charts</span><span class="mcs-badge mcs-p1">P1</span></li><li><span class="li-text">External payment source integrations (3 partners)</span><span class="mcs-badge mcs-p1">P1</span></li><li><span class="li-text">Push notification system for price alerts and account activity</span><span class="mcs-badge mcs-p2">P2</span></li><li><span class="li-text">In-app support and help center</span><span class="mcs-badge mcs-p2">P2</span></li><li><span class="li-text">Biometric authentication (Face ID / fingerprint)</span><span class="mcs-badge mcs-p2">P2</span></li><li><span class="li-text">Advanced charting and market data views</span><span class="mcs-badge mcs-p3">P3</span></li><li><span class="li-text">Referral and social sharing features</span><span class="mcs-badge mcs-p3">P3</span></li></ul></div><div class="mcs-prd-card"><p class="mcs-prd-card-label">Success Metrics</p><ul class="mcs-prd-list"><li>Measurable increase in app downloads within 90 days of launch</li><li>Month-over-month MAU growth sustained post-launch</li><li>All P1 features shipped and QA-approved before app store submission</li><li>Zero critical bugs at launch across iOS and Android</li><li>All 3 partner integrations live and stable at go-live</li></ul></div><div class="mcs-prd-card"><p class="mcs-prd-card-label">Out of Scope</p><ul class="mcs-prd-list"><li>Back-end infrastructure changes (front-end rebuild only)</li><li>Web platform feature parity (separate workstream)</li><li>Custom white-label builds for individual clients (Phase 2)</li></ul></div></div></section><section class="mcs-section"><div class="mcs-section-header"><span class="mcs-section-num">03</span><h2 class="mcs-section-title">Project Roadmap</h2></div><div class="mcs-roadmap-wrap"><div class="mcs-roadmap"><div class="mcs-roadmap-spine"></div><div class="mcs-roadmap-phases"><div class="mcs-phase"><div class="mcs-phase-dot-wrap"><div class="mcs-phase-dot complete"></div><div class="mcs-phase-dot-ring"></div></div><p class="mcs-phase-duration">Month 1</p><p class="mcs-phase-title">Discovery &amp; Design</p><ul class="mcs-phase-tasks"><li>User research &amp; pain point audit</li><li>Brand alignment workshops</li><li>Design system foundation</li><li>Partner scoping initiated</li><li>Roadmap signed off</li></ul></div><div class="mcs-phase"><div class="mcs-phase-dot-wrap"><div class="mcs-phase-dot complete"></div><div class="mcs-phase-dot-ring"></div></div><p class="mcs-phase-duration">Months 2–3</p><p class="mcs-phase-title">Core Build</p><ul class="mcs-phase-tasks"><li>Onboarding &amp; KYC rebuild</li><li>Wallet UX development</li><li>Trading interface build</li><li>Design system implementation</li><li>Partner integration dev</li></ul></div><div class="mcs-phase"><div class="mcs-phase-dot-wrap"><div class="mcs-phase-dot complete"></div><div class="mcs-phase-dot-ring"></div></div><p class="mcs-phase-duration">Months 3–4</p><p class="mcs-phase-title">QA &amp; Testing</p><ul class="mcs-phase-tasks"><li>iOS &amp; Android QA cycles</li><li>Integration testing</li><li>Performance &amp; load testing</li><li>P2 features shipped</li><li>Beta user testing</li></ul></div><div class="mcs-phase"><div class="mcs-phase-dot-wrap"><div class="mcs-phase-dot complete"></div><div class="mcs-phase-dot-ring"></div></div><p class="mcs-phase-duration">Month 5</p><p class="mcs-phase-title">Launch &amp; Handoff</p><ul class="mcs-phase-tasks"><li>App store submission</li><li>Staged rollout (iOS + Android)</li><li>Launch monitoring</li><li>Partner go-live confirmed</li><li>Delivered 1 month early</li></ul></div></div></div></div><div style="margin-top:32px;"><div style="display:grid;grid-template-columns:160px 1fr;gap:0;row-gap:8px;align-items:center;"><div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#6b6b6b;font-family:'DM Sans',sans-serif;">Discovery &amp; Design</div><div style="position:relative;height:28px;"><div style="position:absolute;left:0%;width:20%;height:100%;background:rgba(155,127,212,0.3);border-radius:4px;display:flex;align-items:center;padding:0 10px;"><span style="font-size:11px;color:#9b7fd4;white-space:nowrap;font-family:'DM Sans',sans-serif;">Mo. 1</span></div></div><div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#6b6b6b;font-family:'DM Sans',sans-serif;">Core Build</div><div style="position:relative;height:28px;"><div style="position:absolute;left:20%;width:40%;height:100%;background:rgba(200,169,110,0.3);border-radius:4px;display:flex;align-items:center;padding:0 10px;"><span style="font-size:11px;color:#c8a96e;white-space:nowrap;font-family:'DM Sans',sans-serif;">Mo. 2–3</span></div></div><div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#6b6b6b;font-family:'DM Sans',sans-serif;">QA &amp; Testing</div><div style="position:relative;height:28px;"><div style="position:absolute;left:60%;width:20%;height:100%;background:rgba(79,196,160,0.25);border-radius:4px;display:flex;align-items:center;padding:0 10px;"><span style="font-size:11px;color:#4fc4a0;white-space:nowrap;font-family:'DM Sans',sans-serif;">Mo. 3–4</span></div></div><div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#6b6b6b;font-family:'DM Sans',sans-serif;">Launch</div><div style="position:relative;height:28px;"><div style="position:absolute;left:80%;width:20%;height:100%;background:rgba(79,196,160,0.15);border:1px solid rgba(79,196,160,0.4);border-radius:4px;display:flex;align-items:center;padding:0 10px;"><span style="font-size:11px;color:#4fc4a0;white-space:nowrap;font-family:'DM Sans',sans-serif;">Mo. 5</span></div></div></div><div style="display:grid;grid-template-columns:160px 1fr;margin-top:12px;"><div></div><div style="display:flex;justify-content:space-between;"><span style="font-size:11px;color:#6b6b6b;font-family:'DM Sans',sans-serif;">Month 1</span><span style="font-size:11px;color:#6b6b6b;font-family:'DM Sans',sans-serif;">Month 2</span><span style="font-size:11px;color:#6b6b6b;font-family:'DM Sans',sans-serif;">Month 3</span><span style="font-size:11px;color:#6b6b6b;font-family:'DM Sans',sans-serif;">Month 4</span><span style="font-size:11px;color:#6b6b6b;font-family:'DM Sans',sans-serif;">Month 5</span></div></div></div></section><section class="mcs-section"><div class="mcs-section-header"><span class="mcs-section-num">04</span><h2 class="mcs-section-title">User Flow — New User Onboarding &amp; First Trade</h2></div><div class="mcs-flow-diagram"><svg width="100%" viewBox="0 0 900 620" xmlns="http://www.w3.org/2000/svg"><defs><marker id="mcs-arr-teal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#4fc4a0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="mcs-arr-gray" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#555" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="mcs-arr-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#e07070" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect x="330" y="20" width="220" height="48" rx="8" fill="rgba(155,127,212,0.18)" stroke="rgba(155,127,212,0.5)" stroke-width="0.5"/><text x="440" y="40" text-anchor="middle" font-family="DM Sans" font-size="13" font-weight="500" fill="#c4b0f0">App download</text><text x="440" y="57" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#9b7fd4">iOS or Android store</text><line x1="440" y1="68" x2="440" y2="106" stroke="#4fc4a0" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#mcs-arr-teal)"/><rect x="330" y="108" width="220" height="48" rx="8" fill="rgba(79,196,160,0.12)" stroke="rgba(79,196,160,0.4)" stroke-width="0.5"/><text x="440" y="128" text-anchor="middle" font-family="DM Sans" font-size="13" font-weight="500" fill="#a8e8d8">Account creation</text><text x="440" y="145" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#4fc4a0">Email, password, basic info</text><line x1="440" y1="156" x2="440" y2="194" stroke="#4fc4a0" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#mcs-arr-teal)"/><polygon points="440,196 530,236 440,276 350,236" fill="rgba(79,196,160,0.1)" stroke="rgba(79,196,160,0.5)" stroke-width="0.5"/><text x="440" y="231" text-anchor="middle" font-family="DM Sans" font-size="12" font-weight="500" fill="#a8e8d8">KYC / ID</text><text x="440" y="247" text-anchor="middle" font-family="DM Sans" font-size="12" font-weight="500" fill="#a8e8d8">Verification</text><line x1="440" y1="276" x2="440" y2="316" stroke="#4fc4a0" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#mcs-arr-teal)"/><text x="452" y="300" font-family="DM Sans" font-size="11" fill="#4fc4a0">Pass</text><line x1="530" y1="236" x2="620" y2="236" stroke="#e07070" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#mcs-arr-red)"/><text x="572" y="228" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#e07070">Fail</text><rect x="622" y="212" width="180" height="48" rx="8" fill="rgba(224,112,112,0.1)" stroke="rgba(224,112,112,0.35)" stroke-width="0.5"/><text x="712" y="232" text-anchor="middle" font-family="DM Sans" font-size="12" font-weight="500" fill="#f0a0a0">Manual review</text><text x="712" y="248" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#e07070">Re-submit or escalate</text><rect x="330" y="318" width="220" height="48" rx="8" fill="rgba(79,196,160,0.12)" stroke="rgba(79,196,160,0.4)" stroke-width="0.5"/><text x="440" y="338" text-anchor="middle" font-family="DM Sans" font-size="13" font-weight="500" fill="#a8e8d8">Wallet setup</text><text x="440" y="355" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#4fc4a0">Create or import wallet</text><line x1="440" y1="366" x2="440" y2="406" stroke="#4fc4a0" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#mcs-arr-teal)"/><rect x="330" y="408" width="220" height="48" rx="8" fill="rgba(200,169,110,0.12)" stroke="rgba(200,169,110,0.35)" stroke-width="0.5"/><text x="440" y="428" text-anchor="middle" font-family="DM Sans" font-size="13" font-weight="500" fill="#e8d9b8">Fund account</text><text x="440" y="445" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#c8a96e">Payment integration or crypto deposit</text><line x1="330" y1="432" x2="240" y2="432" stroke="#c8a96e" stroke-width="0.8" stroke-dasharray="3 3"/><rect x="62" y="408" width="176" height="48" rx="8" fill="rgba(200,169,110,0.08)" stroke="rgba(200,169,110,0.25)" stroke-width="0.5"/><text x="150" y="428" text-anchor="middle" font-family="DM Sans" font-size="11" font-weight="500" fill="#e8d9b8">External payment</text><text x="150" y="444" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#c8a96e">3 partner integrations</text><line x1="238" y1="432" x2="330" y2="432" stroke="#c8a96e" stroke-width="0.8" stroke-dasharray="3 3" marker-end="url(#mcs-arr-gray)"/><line x1="440" y1="456" x2="440" y2="496" stroke="#4fc4a0" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#mcs-arr-teal)"/><rect x="330" y="498" width="220" height="48" rx="8" fill="rgba(79,196,160,0.18)" stroke="rgba(79,196,160,0.55)" stroke-width="0.5"/><text x="440" y="518" text-anchor="middle" font-family="DM Sans" font-size="13" font-weight="500" fill="#a8e8d8">Place first trade</text><text x="440" y="535" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#4fc4a0">Buy, sell, or swap crypto assets</text><line x1="440" y1="546" x2="440" y2="576" stroke="#4fc4a0" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#mcs-arr-teal)"/><rect x="330" y="578" width="220" height="32" rx="8" fill="rgba(155,127,212,0.18)" stroke="rgba(155,127,212,0.5)" stroke-width="0.5"/><text x="440" y="599" text-anchor="middle" font-family="DM Sans" font-size="12" font-weight="500" fill="#c4b0f0">Active user — retained in app</text></svg><div class="mcs-flow-legend"><div class="mcs-legend-item"><div class="mcs-legend-swatch" style="background:rgba(155,127,212,0.4);border:1px solid rgba(155,127,212,0.6);"></div>Start / End state</div><div class="mcs-legend-item"><div class="mcs-legend-swatch" style="background:rgba(79,196,160,0.25);border:1px solid rgba(79,196,160,0.4);"></div>Core user journey</div><div class="mcs-legend-item"><div class="mcs-legend-swatch" style="background:rgba(200,169,110,0.2);border:1px solid rgba(200,169,110,0.4);"></div>Payment / funding path</div><div class="mcs-legend-item"><div class="mcs-legend-swatch" style="background:rgba(224,112,112,0.2);border:1px solid rgba(224,112,112,0.4);"></div>KYC failure / review path</div></div></div></section><section class="mcs-section"><div class="mcs-section-header"><span class="mcs-section-num">05</span><h2 class="mcs-section-title">Outcomes &amp; Impact</h2></div><div class="mcs-outcomes-grid"><div class="mcs-outcome-card"><div class="mcs-outcome-val">+37%</div><div class="mcs-outcome-desc">Increase in app downloads following redesign launch across iOS and Android</div></div><div class="mcs-outcome-card"><div class="mcs-outcome-val">+48%</div><div class="mcs-outcome-desc">Growth in monthly active users — sustained engagement driven by improved UX</div></div><div class="mcs-outcome-card"><div class="mcs-outcome-val">-1mo</div><div class="mcs-outcome-desc">Delivered one full month ahead of the 6-month budget with all P1 features shipped</div></div></div><p style="font-size:14px;color:#6b6b6b;line-height:1.7;max-width:700px;font-family:'DM Sans',sans-serif;">The mobile app rebuild transformed a stagnant, off-brand product into a modern trading experience that users actively downloaded and returned to.</p></section>`;
+
+    var styleEl = null;
+
+    function openCaseStudy(type) {
+      var modal = document.getElementById('cs-modal');
+      var header = document.getElementById('cs-modal-header');
+      var title = document.getElementById('cs-modal-title');
+      var closeBtn = document.getElementById('cs-close-btn');
+      var content = document.getElementById('cs-modal-content');
+
+      if (styleEl) styleEl.remove();
+      styleEl = document.createElement('style');
+
+      if (type === 'licensing') {
+        title.textContent = 'U.S. Market Licensing Expansion — Case Study';
+        title.style.color = '#c8a96e';
+        header.style.borderBottom = '1px solid rgba(200,169,110,0.15)';
+        closeBtn.style.border = '1px solid rgba(200,169,110,0.3)';
+        closeBtn.style.color = '#c8a96e';
+        styleEl.textContent = licensingCSS;
+        content.innerHTML = licensingHTML;
+      } else {
+        title.textContent = 'Mobile Trading App Redesign — Case Study';
+        title.style.color = '#4fc4a0';
+        header.style.borderBottom = '1px solid rgba(79,196,160,0.15)';
+        closeBtn.style.border = '1px solid rgba(79,196,160,0.3)';
+        closeBtn.style.color = '#4fc4a0';
+        styleEl.textContent = mobileCSS;
+        content.innerHTML = mobileHTML;
+      }
+
+      document.head.appendChild(styleEl);
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCaseStudy() {
+      document.getElementById('cs-modal').style.display = 'none';
+      document.body.style.overflow = '';
+      if (styleEl) { styleEl.remove(); styleEl = null; }
+    }
+
+    document.getElementById('cs-modal').addEventListener('click', function(e) {
+      if (e.target === this) closeCaseStudy();
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeCaseStudy();
+    });
+  </script>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+
+    // ── Garment lightbox ──────────────────────────────────────
+    const garmentSrcs = [
+      document.querySelector('.garment-card[data-index="0"] img')?.src,
+      document.querySelector('.garment-card[data-index="1"] img')?.src,
+      document.querySelector('.garment-card[data-index="2"] img')?.src,
+    ];
+    const garmentAlts = [
+      'Detail View — Crimson & Gold Brocade Jacket',
+      'Front View — 1/1 — Crimson & Gold Brocade Jacket',
+      'Front View — Wider Shot — Crimson & Gold Brocade Jacket',
+    ];
+
+    let lbIndex = 0;
+    const lightbox   = document.getElementById('lightbox');
+    const lbImg      = document.getElementById('lightbox-img');
+    const lbCounter  = document.getElementById('lb-counter');
+    const lbClose    = document.getElementById('lightbox-close');
+    const lbPrev     = document.getElementById('lb-prev');
+    const lbNext     = document.getElementById('lb-next');
+
+    function openLightbox(i) {
+      lbIndex = i;
+      lbImg.src = garmentSrcs[lbIndex];
+      lbImg.alt = garmentAlts[lbIndex];
+      lbCounter.textContent = (lbIndex + 1) + ' / ' + garmentSrcs.length;
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function stepLightbox(dir) {
+      lbIndex = (lbIndex + dir + garmentSrcs.length) % garmentSrcs.length;
+      lbImg.src = garmentSrcs[lbIndex];
+      lbImg.alt = garmentAlts[lbIndex];
+      lbCounter.textContent = (lbIndex + 1) + ' / ' + garmentSrcs.length;
+    }
+
+    document.querySelectorAll('.garment-card').forEach(card => {
+      card.addEventListener('click', () => openLightbox(parseInt(card.dataset.index)));
+    });
+
+    lbClose.addEventListener('click', closeLightbox);
+    lbPrev.addEventListener('click', e => { e.stopPropagation(); stepLightbox(-1); });
+    lbNext.addEventListener('click', e => { e.stopPropagation(); stepLightbox(1); });
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+
+    document.addEventListener('keydown', e => {
+      if (!lightbox.classList.contains('open')) return;
+      if

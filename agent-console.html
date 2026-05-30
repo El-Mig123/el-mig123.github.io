@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Agent Console — FleetView</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cormorant+SC:wght@300;400;500&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --cream: #C8B89A;
+      --cream-light: #D8CBAE;
+      --cream-dark: #B5A487;
+      --navy: #1E2D4E;
+      --navy-light: #2E4070;
+      --navy-mid: #263659;
+      --gold: #FFC403;
+      --gold-dim: rgba(255,196,3,0.18);
+      --text-muted: #2c3d58;
+      --green: #2E7D5B;
+      --green-dim: rgba(46,125,91,0.14);
+      --red: #8B2635;
+      --red-dim: rgba(139,38,53,0.13);
+      --amber: #B06A00;
+      --amber-dim: rgba(176,106,0,0.14);
+      --blue-dim: rgba(46,64,112,0.12);
+      --shadow: 0 4px 24px rgba(30,45,78,0.10);
+    }
+
+    ::selection { background: var(--gold); color: var(--navy); }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--cream);
+      color: var(--navy);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── GRAIN ── */
+    .grain {
+      position: fixed; inset: 0; z-index: 0;
+      pointer-events: none; opacity: 0.07;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 200px;
+    }
+
+    .papyrus-edges {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 60% 40% at 0% 0%, rgba(101,78,50,0.22) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 100% 0%, rgba(101,78,50,0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 0% 100%, rgba(101,78,50,0.20) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 100% 100%, rgba(101,78,50,0.18) 0%, transparent 70%);
+    }
+
+    /* ── NAV ── */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: var(--cream);
+      border-bottom: 1px solid rgba(30,45,78,0.12);
+    }
+
+    .header-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5vw;
+      height: 68px;
+    }
+
+    .brand {
+      display: flex; align-items: baseline; gap: 0.6rem;
+      text-decoration: none;
+    }
+
+    .brand-name {
+      font-family: 'Cormorant SC', serif;
+      font-weight: 400; font-size: 1.25rem;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--navy);
+    }
+
+    .brand-tag {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300; font-size: 0.65rem;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--text-muted); opacity: 0.7;
+    }
+
+    /* ── TAB SWITCHER ── */
+    .tab-bar {
+      display: flex; gap: 0;
+      border: 1px solid rgba(30,45,78,0.18);
+      border-radius: 3px; overflow: hidden;
+    }
+
+    .tab-btn {
+      font-family: 'Jost', sans-serif;
+      font-weight: 400; font-size: 0.72rem;
+      letter-spacing: 0.20em; text-transform: uppercase;
+      color: var(--text-muted);
+      background: transparent;
+      border: none; cursor: pointer;
+      padding: 0.55rem 1.4rem;
+      transition: background 0.2s, color 0.2s;
+      white-space: nowrap;
+    }
+
+    .tab-btn + .tab-btn {
+      border-left: 1px solid rgba(30,45,78,0.18);
+    }
+
+    .tab-btn.active {
+      background: var(--navy);
+      color: var(--cream-light);
+    }
+
+    .tab-btn:not(.active):hover {
+      background: rgba(30,45,78,0.06);
+    }
+
+    /* ── META ROW ── */
+    .meta-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.55rem 5vw;
+      background: rgba(30,45,78,0.04);
+      border-bottom: 1px solid rgba(30,45,78,0.08);
+      font-size: 0.67rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--text-muted); opacity: 0.75;
+    }
+
+    .live-dot {
+      display: inline-block; width: 6px; height: 6px;
+      border-radius: 50%; background: var(--green);
+      margin-right: 0.45rem;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+
+    /* ── MAIN CONTENT ── */
+    main {
+      position: relative; z-index: 1;
+      padding-top: 68px;
+    }
+
+    .screen {
+      display: none;
+      padding: 2.5rem 5vw 4rem;
+      animation: screenIn 0.3s ease both;
+    }
+
+    .screen.active { display: block; }
+
+    @keyframes screenIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── SCREEN HEADER ── */
+    .screen-header {
+      margin-bottom: 2rem;
+    }
+
+    .screen-label {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300; font-size: 0.68rem;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--text-muted); opacity: 0.7;
+      margin-bottom: 0.35rem;
+    }
+
+    .screen-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400; font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      letter-spacing: -0.01em;
+      color: var(--navy);
+    }
+
+    .gold-rule {
+      width: 40px; height: 1px;
+      background: var(--gold);
+      margin-top: 0.8rem;
+    }
+
+    /* ── OPERATOR TABLE ── */
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid rgba(30,45,78,0.14);
+      border-radius: 4px;
+      box-shadow: var(--shadow);
+    }
+
+    table {
+      width: 100%; border-collapse: collapse;
+      background: rgba(200,184,154,0.45);
+      backdrop-filter: blur(2px);
+    }
+
+    thead tr {
+      border-bottom: 2px solid rgba(30,45,78,0.15);
+    }
+
+    th {
+      font-family: 'Jost', sans-serif;
+      font-weight: 400; font-size: 0.63rem;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--text-muted); padding: 0.9rem 1.2rem;
+      text-align: left; white-space: nowrap;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid rgba(30,45,78,0.08);
+      transition: background 0.18s;
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+
+    tbody tr:hover { background: rgba(30,45,78,0.05); }
+
+    td {
+      padding: 1rem 1.2rem;
+      vertical-align: middle;
+    }
+
+    /* Task name */
+    .task-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 500; font-size: 1.05rem;
+      color: var(--navy);
+      white-space: nowrap;
+    }
+
+    .task-agent {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300; font-size: 0.68rem;
+      letter-spacing: 0.1em; color: var(--text-muted);
+      opacity: 0.65; margin-top: 2px;
+    }
+
+    /* Status badges */
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-family: 'Jost', sans-serif;
+      font-weight: 400; font-size: 0.63rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      padding: 0.28rem 0.7rem; border-radius: 2px;
+      white-space: nowrap;
+    }
+
+    .status-badge .dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .badge-running {
+      background: var(--blue-dim);
+      color: var(--navy-light);
+    }
+    .badge-running .dot { background: var(--navy-light); animation: pulse-dot 2s ease infinite; }
+
+    .badge-pending {
+      background: var(--gold-dim);
+      color: var(--amber);
+    }
+    .badge-pending .dot { background: var(--gold); }
+
+    .badge-failed {
+      background: var(--red-dim);
+      color: var(--red);
+    }
+    .badge-failed .dot { background: var(--red); }
+
+    .badge-completed {
+      background: var(--green-dim);
+      color: var(--green);
+    }
+    .badge-completed .dot { background: var(--green); }
+
+    .badge-escalated {
+      background: rgba(139,38,53,0.08);
+      color: #6B1A27;
+      border: 1px solid rgba(139,38,53,0.25);
+    }
+    .badge-escalated .dot { background: #6B1A27; }
+
+    /* Action buttons */
+    .action-group {
+      display: flex; gap: 0.4rem; flex-wrap: nowrap;
+    }
+
+    .btn {
+      font-family: 'Jost', sans-serif;
+      font-weight: 400; font-size: 0.62rem;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      border: 1px solid; border-radius: 2px;
+      padding: 0.3rem 0.7rem;
+      cursor: pointer; white-space: nowrap;
+      transition: background 0.18s, color 0.18s, transform 0.1s;
+      background: transparent;
+    }
+
+    .btn:active { transform: scale(0.96); }
+
+    .btn-approve {
+      border-color: var(--green);
+      color: var(--green);
+    }
+    .btn-approve:hover { background: var(--green); color: #fff; }
+
+    .btn-reject {
+      border-color: var(--red);
+      color: var(--red);
+    }
+    .btn-reject:hover { background: var(--red); color: #fff; }
+
+    .btn-rerun {
+      border-color: rgba(30,45,78,0.35);
+      color: var(--navy-mid);
+    }
+    .btn-rerun:hover { background: var(--navy-mid); color: var(--cream-light); }
+
+    .btn-escalate {
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+    .btn-escalate:hover { background: var(--amber); color: #fff; }
+
+    /* ── ROI PANEL ── */
+    .roi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+      gap: 1.4rem;
+    }
+
+    .roi-card {
+      background: rgba(200,184,154,0.45);
+      border: 1px solid rgba(30,45,78,0.13);
+      border-radius: 4px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .roi-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(30,45,78,0.14);
+    }
+
+    .roi-card-header {
+      padding: 1.1rem 1.4rem 0.9rem;
+      border-bottom: 1px solid rgba(30,45,78,0.09);
+      display: flex; align-items: flex-start; justify-content: space-between;
+    }
+
+    .roi-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 500; font-size: 1.12rem;
+      color: var(--navy);
+    }
+
+    .roi-card-sub {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300; font-size: 0.65rem;
+      letter-spacing: 0.12em; color: var(--text-muted);
+      opacity: 0.6; margin-top: 2px;
+    }
+
+    .verdict {
+      font-family: 'Jost', sans-serif;
+      font-weight: 500; font-size: 0.6rem;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      padding: 0.25rem 0.65rem; border-radius: 2px;
+      flex-shrink: 0; margin-left: 0.8rem; margin-top: 2px;
+    }
+
+    .verdict-scale {
+      background: var(--green-dim);
+      color: var(--green);
+      border: 1px solid rgba(46,125,91,0.3);
+    }
+
+    .verdict-kill {
+      background: var(--red-dim);
+      color: var(--red);
+      border: 1px solid rgba(139,38,53,0.3);
+    }
+
+    .verdict-monitor {
+      background: var(--gold-dim);
+      color: var(--amber);
+      border: 1px solid rgba(176,106,0,0.25);
+    }
+
+    .roi-stats {
+      padding: 1.1rem 1.4rem;
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .stat-item { }
+
+    .stat-label {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300; font-size: 0.6rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--text-muted); opacity: 0.65;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 500; font-size: 1.45rem;
+      color: var(--navy); line-height: 1;
+    }
+
+    .stat-unit {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300; font-size: 0.62rem;
+      color: var(--text-muted); opacity: 0.55;
+      margin-top: 2px;
+    }
+
+    /* Success rate bar */
+    .rate-bar-wrap {
+      padding: 0 1.4rem 1.3rem;
+    }
+
+    .rate-bar-label {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 0.4rem;
+    }
+
+    .rate-bar-label span:first-child {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300; font-size: 0.6rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--text-muted); opacity: 0.65;
+    }
+
+    .rate-bar-label .rate-pct {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 500; font-size: 0.95rem;
+      color: var(--navy);
+    }
+
+    .rate-bar-track {
+      height: 3px;
+      background: rgba(30,45,78,0.12);
+      border-radius: 99px; overflow: hidden;
+    }
+
+    .rate-bar-fill {
+      height: 100%; border-radius: 99px;
+      transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .fill-high { background: var(--green); }
+    .fill-mid  { background: var(--gold); }
+    .fill-low  { background: var(--red); }
+
+    /* Recommendation summary */
+    .roi-summary {
+      padding: 0.8rem 1.4rem 1.1rem;
+      border-top: 1px solid rgba(30,45,78,0.07);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-weight: 300;
+      font-size: 0.9rem; line-height: 1.5;
+      color: var(--text-muted);
+    }
+
+    /* ── TOAST ── */
+    #toast-container {
+      position: fixed; bottom: 2rem; right: 2rem;
+      z-index: 9999;
+      display: flex; flex-direction: column; gap: 0.6rem;
+    }
+
+    .toast {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300; font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      background: var(--navy); color: var(--cream-light);
+      padding: 0.7rem 1.2rem; border-radius: 3px;
+      box-shadow: 0 4px 20px rgba(30,45,78,0.3);
+      animation: toast-in 0.3s ease both;
+      max-width: 300px;
+    }
+
+    .toast.fade-out { animation: toast-out 0.3s ease forwards; }
+
+    @keyframes toast-in {
+      from { opacity: 0; transform: translateX(20px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes toast-out {
+      from { opacity: 1; transform: translateX(0); }
+      to   { opacity: 0; transform: translateX(20px); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      .action-group { flex-wrap: wrap; }
+      .roi-stats { grid-template-columns: 1fr 1fr; }
+      .header-inner { padding: 0 1rem; }
+      .screen { padding: 2rem 1rem 3rem; }
+      table { font-size: 0.88rem; }
+      th, td { padding: 0.75rem 0.8rem; }
+    }
+
+    @media (max-width: 500px) {
+      .brand-tag { display: none; }
+      .meta-bar { flex-direction: column; gap: 0.3rem; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="grain"></div>
+<div class="papyrus-edges"></div>
+
+<header>
+  <div class="header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-name">FleetView</span>
+      <span class="brand-tag">Agent Console</span>
+    </a>
+    <nav class="tab-bar">
+      <button class="tab-btn active" data-tab="operator">Operator View</button>
+      <button class="tab-btn" data-tab="roi">ROI Panel</button>
+    </nav>
+  </div>
+  <div class="meta-bar">
+    <span><span class="live-dot"></span>Live · 6 active agents</span>
+    <span>Last sync: just now</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- ── SCREEN 1: OPERATOR VIEW ── -->
+  <section class="screen active" id="screen-operator">
+    <div class="screen-header">
+      <p class="screen-label">Screen 1</p>
+      <h1 class="screen-title">Operator View</h1>
+      <div class="gold-rule"></div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Task</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="task-table-body">
+          <!-- rows injected by JS -->
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── SCREEN 2: ROI PANEL ── -->
+  <section class="screen" id="screen-roi">
+    <div class="screen-header">
+      <p class="screen-label">Screen 2</p>
+      <h1 class="screen-title">ROI Panel</h1>
+      <div class="gold-rule"></div>
+    </div>
+
+    <div class="roi-grid" id="roi-grid">
+      <!-- cards injected by JS -->
+    </div>
+  </section>
+
+</main>
+
+<div id="toast-container"></div>
+
+<script>
+  /* ── DATA ── */
+  const tasks = [
+    { id: 1, name: 'Email Triage',             agent: 'inbox-agent-v2',      status: 'running'   },
+    { id: 2, name: 'Invoice Processing',        agent: 'finance-agent-v1',    status: 'pending'   },
+    { id: 3, name: 'Customer Sentiment',        agent: 'analytics-agent-v3',  status: 'failed'    },
+    { id: 4, name: 'Contract Review',           agent: 'legal-agent-v1',      status: 'running'   },
+    { id: 5, name: 'Lead Qualification',        agent: 'sales-agent-v2',      status: 'completed' },
+    { id: 6, name: 'Report Generation',         agent: 'reporting-agent-v1',  status: 'escalated' },
+  ];
+
+  const agents = [
+    {
+      name: 'Email Triage',
+      agent: 'inbox-agent-v2',
+      costPerTask: '$0.04',
+      timeSaved: '12 min',
+      successRate: 94,
+      verdict: 'scale',
+      summary: 'Consistent throughput at minimal cost. Handles 300+ tasks/day with no human touchpoints needed.',
+    },
+    {
+      name: 'Invoice Processing',
+      agent: 'finance-agent-v1',
+      costPerTask: '$0.18',
+      timeSaved: '45 min',
+      successRate: 88,
+      verdict: 'scale',
+      summary: 'Strong time-savings ratio. Each automated task recovers nearly an hour of manual AP work.',
+    },
+    {
+      name: 'Customer Sentiment',
+      agent: 'analytics-agent-v3',
+      costPerTask: '$0.07',
+      timeSaved: '8 min',
+      successRate: 71,
+      verdict: 'monitor',
+      summary: 'Accuracy slipping on edge-case sentiment. Monitor for another sprint before committing to scale.',
+    },
+    {
+      name: 'Contract Review',
+      agent: 'legal-agent-v1',
+      costPerTask: '$2.30',
+      timeSaved: '3.2 hrs',
+      successRate: 82,
+      verdict: 'scale',
+      summary: 'Highest per-task cost, but the 3+ hour time savings per contract drives exceptional ROI.',
+    },
+    {
+      name: 'Lead Qualification',
+      agent: 'sales-agent-v2',
+      costPerTask: '$0.12',
+      timeSaved: '22 min',
+      successRate: 68,
+      verdict: 'monitor',
+      summary: 'Success rate below threshold. Conversion quality needs improvement before expanding volume.',
+    },
+    {
+      name: 'Report Generation',
+      agent: 'reporting-agent-v1',
+      costPerTask: '$0.95',
+      timeSaved: '1.5 hrs',
+      successRate: 55,
+      verdict: 'kill',
+      summary: 'Failure rate exceeds 45%. Human review is required on more than half of outputs — killing efficiency gains.',
+    },
+  ];
+
+  /* ── STATUS CONFIG ── */
+  const statusMap = {
+    running:   { cls: 'badge-running',   label: 'Running'   },
+    pending:   { cls: 'badge-pending',   label: 'Pending'   },
+    failed:    { cls: 'badge-failed',    label: 'Failed'    },
+    completed: { cls: 'badge-completed', label: 'Completed' },
+    escalated: { cls: 'badge-escalated', label: 'Escalated' },
+  };
+
+  /* ── RENDER OPERATOR TABLE ── */
+  function renderTable() {
+    const tbody = document.getElementById('task-table-body');
+    tbody.innerHTML = tasks.map(t => {
+      const s = statusMap[t.status];
+      return `
+        <tr data-id="${t.id}">
+          <td>
+            <div class="task-name">${t.name}</div>
+            <div class="task-agent">${t.agent}</div>
+          </td>
+          <td>
+            <span class="status-badge ${s.cls}">
+              <span class="dot"></span>${s.label}
+            </span>
+          </td>
+          <td>
+            <div class="action-group">
+              <button class="btn btn-approve" onclick="handleAction(${t.id},'approve')">Approve</button>
+              <button class="btn btn-reject"  onclick="handleAction(${t.id},'reject')">Reject</button>
+              <button class="btn btn-rerun"   onclick="handleAction(${t.id},'rerun')">Re-run</button>
+              <button class="btn btn-escalate" onclick="handleAction(${t.id},'escalate')">Escalate</button>
+            </div>
+          </td>
+        </tr>`;
+    }).join('');
+  }
+
+  /* ── RENDER ROI CARDS ── */
+  function renderROI() {
+    const grid = document.getElementById('roi-grid');
+    grid.innerHTML = agents.map(a => {
+      const fillCls = a.successRate >= 80 ? 'fill-high' : a.successRate >= 65 ? 'fill-mid' : 'fill-low';
+      const verdictCls = a.verdict === 'scale' ? 'verdict-scale' : a.verdict === 'kill' ? 'verdict-kill' : 'verdict-monitor';
+      const verdictLabel = a.verdict === 'scale' ? 'Scale' : a.verdict === 'kill' ? 'Kill' : 'Monitor';
+      return `
+        <article class="roi-card">
+          <div class="roi-card-header">
+            <div>
+              <div class="roi-card-title">${a.name}</div>
+              <div class="roi-card-sub">${a.agent}</div>
+            </div>
+            <span class="verdict ${verdictCls}">${verdictLabel}</span>
+          </div>
+          <div class="roi-stats">
+            <div class="stat-item">
+              <div class="stat-label">Cost / task</div>
+              <div class="stat-value">${a.costPerTask}</div>
+              <div class="stat-unit">per execution</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Time saved</div>
+              <div class="stat-value">${a.timeSaved}</div>
+              <div class="stat-unit">vs manual</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Success</div>
+              <div class="stat-value">${a.successRate}%</div>
+              <div class="stat-unit">pass rate</div>
+            </div>
+          </div>
+          <div class="rate-bar-wrap">
+            <div class="rate-bar-label">
+              <span>Success rate</span>
+              <span class="rate-pct">${a.successRate}%</span>
+            </div>
+            <div class="rate-bar-track">
+              <div class="rate-bar-fill ${fillCls}" style="width:${a.successRate}%"></div>
+            </div>
+          </div>
+          <div class="roi-summary">${a.summary}</div>
+        </article>`;
+    }).join('');
+  }
+
+  /* ── TOAST ── */
+  const toastMessages = {
+    approve:  (name) => `Approved: ${name}`,
+    reject:   (name) => `Rejected: ${name}`,
+    rerun:    (name) => `Re-running: ${name}`,
+    escalate: (name) => `Escalated: ${name} — assigned to on-call operator`,
+  };
+
+  function showToast(msg) {
+    const el = document.createElement('div');
+    el.className = 'toast';
+    el.textContent = msg;
+    document.getElementById('toast-container').appendChild(el);
+    setTimeout(() => {
+      el.classList.add('fade-out');
+      el.addEventListener('animationend', () => el.remove());
+    }, 3000);
+  }
+
+  /* ── ACTION HANDLER ── */
+  function handleAction(id, action) {
+    const task = tasks.find(t => t.id === id);
+    if (!task) return;
+
+    if (action === 'rerun') {
+      task.status = 'running';
+    } else if (action === 'escalate') {
+      task.status = 'escalated';
+    } else if (action === 'approve') {
+      task.status = 'completed';
+    } else if (action === 'reject') {
+      task.status = 'failed';
+    }
+
+    renderTable();
+    showToast(toastMessages[action](task.name));
+  }
+
+  /* ── TAB SWITCHING ── */
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const screens = { operator: document.getElementById('screen-operator'), roi: document.getElementById('screen-roi') };
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.tab;
+      tabBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      Object.entries(screens).forEach(([key, el]) => {
+        el.classList.toggle('active', key === target);
+      });
+    });
+  });
+
+  /* ── INIT ── */
+  renderTable();
+  renderROI();
+</script>
+</body>
+</html>
